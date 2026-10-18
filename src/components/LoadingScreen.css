@@ -1,0 +1,373 @@
+/* MAULIK.EXE — PLAYFUL LIQUID-GLASS LOADING EXPERIENCE */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--color-bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  user-select: none;
+  overflow: hidden;
+}
+
+.liquid-playground {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--raw-space-8);
+  padding: var(--raw-space-6);
+  max-width: 440px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   AMBIENT CAUSTIC LIGHT FIELD
+   ========================================================================== */
+.liquid-caustic-field {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 260px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.caustic-blob {
+  position: absolute;
+  border-radius: var(--raw-radius-full);
+  filter: blur(36px);
+  will-change: transform, opacity;
+}
+
+.blob-1 {
+  width: 180px;
+  height: 180px;
+  top: 10%;
+  left: 10%;
+  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+  opacity: 0.85;
+  animation: causticFloat1 6s infinite ease-in-out alternate;
+}
+
+.blob-2 {
+  width: 160px;
+  height: 160px;
+  bottom: 10%;
+  right: 10%;
+  background: radial-gradient(circle, var(--color-accent-secondary-glow, var(--color-accent-glow)) 0%, transparent 70%);
+  opacity: 0.65;
+  animation: causticFloat2 7s infinite ease-in-out alternate;
+}
+
+@keyframes causticFloat1 {
+  0% { transform: translate(0, 0) scale(0.95); }
+  100% { transform: translate(18px, 14px) scale(1.1); }
+}
+
+@keyframes causticFloat2 {
+  0% { transform: translate(0, 0) scale(1.05); }
+  100% { transform: translate(-16px, -12px) scale(0.9); }
+}
+
+/* ==========================================================================
+   LIQUID GLASS CLUSTER
+   ========================================================================== */
+.liquid-glass-cluster {
+  position: relative;
+  width: 250px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+@media (max-width: 480px) {
+  .liquid-glass-cluster {
+    width: 220px;
+    height: 160px;
+    transform: scale(0.9);
+  }
+}
+
+/* Base Translucent Liquid Glass Material */
+.glass-shape {
+  position: absolute;
+  backdrop-filter: blur(14px) saturate(190%);
+  -webkit-backdrop-filter: blur(14px) saturate(190%);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* Obsidian & Dark Modes: Translucent Deep Smoke Glass */
+.glass-shape {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+    inset 0 -1.5px 3px rgba(0, 0, 0, 0.4),
+    0 16px 36px -8px rgba(0, 0, 0, 0.55),
+    0 0 24px var(--color-accent-glow);
+}
+
+/* Light Appearance: Bright Tactile Frosted Glass with Caustic Rim */
+[data-appearance="light"] .glass-shape {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.72) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(15, 23, 42, 0.08),
+    0 18px 36px -8px rgba(15, 23, 42, 0.16),
+    0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+/* 1. Central Focal Liquid Lens */
+.glass-lens-core {
+  width: 104px;
+  height: 104px;
+  border-radius: 46% 54% 52% 48% / 50% 48% 52% 50%;
+  z-index: 3;
+}
+
+/* Primary Curved Specular Glint */
+.glass-lens-specular {
+  position: absolute;
+  top: 3px;
+  left: 12px;
+  right: 12px;
+  height: 28px;
+  border-radius: 50% 50% 40% 40% / 60% 60% 30% 30%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.2) 60%,
+    transparent 100%
+  );
+  filter: blur(0.6px);
+  pointer-events: none;
+}
+
+[data-appearance="light"] .glass-lens-specular {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.4) 60%,
+    transparent 100%
+  );
+}
+
+/* Iridescent Dispersion Sheen on Core */
+.glass-lens-iridescent {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 65% 75%,
+    var(--color-accent-glow) 0%,
+    transparent 65%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Expanding Liquid Wavefront / Ripple */
+.glass-liquid-ripple {
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 1.5px solid var(--color-accent-primary);
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+/* Central Luminous Dewdrop */
+.glass-core-bead {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 9px;
+  height: 9px;
+  border-radius: var(--raw-radius-full);
+  background-color: var(--color-accent-primary);
+  box-shadow:
+    0 0 14px var(--color-accent-primary),
+    0 0 28px var(--color-accent-glow);
+  pointer-events: none;
+}
+
+/* 2. Satellite Droplet A (Top-Left) */
+.glass-droplet-a {
+  width: 58px;
+  height: 58px;
+  top: 10px;
+  left: 20px;
+  border-radius: 58% 42% 52% 48% / 46% 54% 46% 54%;
+  z-index: 2;
+  animation: liquidFloatA 4.8s infinite ease-in-out;
+}
+
+/* 3. Satellite Pill B (Bottom-Right) */
+.glass-pill-b {
+  width: 76px;
+  height: 46px;
+  bottom: 8px;
+  right: 18px;
+  border-radius: 28px;
+  z-index: 2;
+  animation: liquidFloatB 5.4s infinite ease-in-out;
+}
+
+/* 4. Micro Bead C (Top-Right) */
+.glass-bead-c {
+  width: 26px;
+  height: 26px;
+  top: 18px;
+  right: 34px;
+  border-radius: 50%;
+  z-index: 2;
+  animation: liquidFloatC 4.2s infinite ease-in-out;
+}
+
+.glass-specular-arc {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  right: 6px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    transparent 100%
+  );
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+.glass-specular-dot {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  filter: blur(0.4px);
+  pointer-events: none;
+}
+
+.glass-iridescent-film {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    var(--color-accent-glow) 100%
+  );
+  pointer-events: none;
+}
+
+/* Gentle Organic Idle Floating */
+@keyframes liquidFloatA {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-3px, -4px) rotate(-3deg); }
+}
+
+@keyframes liquidFloatB {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(4px, 3px) rotate(4deg); }
+}
+
+@keyframes liquidFloatC {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2px, -3px); }
+}
+
+/* ==========================================================================
+   WORDMARK & EDITORIAL IDENTITY
+   ========================================================================== */
+.liquid-identity-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--raw-space-2);
+  text-align: center;
+  z-index: 2;
+}
+
+.liquid-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.liquid-brand-text {
+  font-size: 1.45rem;
+  font-weight: var(--raw-weight-bold);
+  letter-spacing: 0.16em;
+  color: var(--color-text-primary);
+  line-height: 1.1;
+  text-indent: 0.16em; /* optical centering with letter-spacing */
+}
+
+@media (min-width: 640px) {
+  .liquid-brand-text {
+    font-size: 1.6rem;
+  }
+}
+
+.liquid-brand-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.liquid-accent-drop {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raw-radius-full);
+  background-color: var(--color-accent-primary);
+  box-shadow: 0 0 10px var(--color-accent-primary);
+  flex-shrink: 0;
+  animation: liquidDropPulse 2s infinite ease-in-out;
+}
+
+@keyframes liquidDropPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+/* Accessibility: Immediate Bypass */
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen {
+    display: none !important;
+  }
+}

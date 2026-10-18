@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#06080C"/>
+  <rect x="1" y="1" width="30" height="30" rx="5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <!-- Glowing Green Indicator Dot -->
+  <circle cx="8" cy="8" r="2.5" fill="#34D399"/>
+  <!-- Monospace 'M.' Glyph in Space Grotesk / JetBrains style -->
+  <path d="M7 23V14L11 19.5L15 14V23" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M19 23H25" stroke="#34D399" stroke-width="2" stroke-linecap="round"/>
+</svg>

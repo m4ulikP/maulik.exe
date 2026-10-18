@@ -1,0 +1,71 @@
+.custom-cursor-container {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--raw-radius-full);
+  background-color: var(--color-accent-primary);
+  pointer-events: none;
+  z-index: 100000;
+  transition: transform 0s, width 150ms ease, height 150ms ease, background-color 150ms ease;
+  box-shadow: 0 0 6px var(--color-accent-primary);
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raw-radius-full);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  background-color: rgba(52, 211, 153, 0.03);
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0s, width 200ms var(--raw-ease-snappy), height 200ms var(--raw-ease-snappy), border-color 200ms ease, background-color 200ms ease;
+  will-change: transform;
+}
+
+/* Hovering interactive target */
+.cursor-ring.cursor-hovered {
+  top: -24px;
+  left: -24px;
+  width: 48px;
+  height: 48px;
+  border-color: var(--color-accent-primary);
+  background-color: rgba(52, 211, 153, 0.08);
+}
+
+.cursor-dot.cursor-hovered {
+  transform: scale(1.4);
+  background-color: var(--raw-mint-300);
+}
+
+/* Click state */
+.cursor-ring.cursor-clicked {
+  transform: scale(0.85);
+  border-color: var(--raw-cyan-400);
+}
+
+/* Hide decorative cursor when interactive terminal is open */
+body[data-terminal-open="true"] .custom-cursor-container {
+  display: none !important;
+}
+
+/* Respect coarse / touch and reduced-motion */
+@media (pointer: coarse) or (prefers-reduced-motion: reduce) {
+  .custom-cursor-container {
+    display: none !important;
+  }
+}
+

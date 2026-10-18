@@ -1,0 +1,185 @@
+.contact-section {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  scroll-margin-top: calc(var(--nav-height) + 2.5rem);
+}
+
+.contact-box-shell {
+  position: relative;
+  width: 100%;
+}
+
+.contact-editorial-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--raw-space-8);
+  margin-top: var(--raw-space-8);
+  padding: var(--raw-space-8);
+  background-color: var(--glass-luminous-bg);
+  backdrop-filter: blur(var(--glass-luminous-blur));
+  -webkit-backdrop-filter: blur(var(--glass-luminous-blur));
+  border: 1px solid var(--glass-luminous-border);
+  border-radius: var(--raw-radius-md);
+  box-shadow: var(--glass-luminous-highlight), var(--glass-luminous-glow);
+  position: relative;
+  transition: border-color var(--raw-duration-normal) var(--raw-ease-smooth);
+}
+
+#contact-lens {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+}
+
+#contact-lens.liquid-active {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#contact-lens > * {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+/* Static optical frosted glass: no hover-induced panel tilt, scaling, or brightness shift */
+.contact-editorial-box:hover {
+  border-color: var(--glass-luminous-border);
+}
+
+.contact-primary-action {
+  display: flex;
+  flex-direction: column;
+  gap: var(--raw-space-2);
+}
+
+.contact-channel-label {
+  font-size: 0.72rem;
+  color: var(--color-accent-primary);
+  letter-spacing: var(--raw-tracking-widest);
+}
+
+.email-display-row {
+  display: flex;
+  align-items: center;
+  gap: var(--raw-space-4);
+  flex-wrap: wrap;
+}
+
+.email-address-link {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: var(--raw-weight-bold);
+  color: var(--color-text-primary);
+  transition: color var(--raw-duration-fast) ease;
+}
+
+.email-address-link:hover {
+  color: var(--color-accent-primary);
+}
+
+.btn-copy-address {
+  font-size: 0.75rem;
+  font-weight: var(--raw-weight-semibold);
+  padding: 6px 14px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--raw-radius-xs);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--raw-duration-fast) ease;
+}
+
+.btn-copy-address:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-accent-primary);
+  background-color: var(--color-bg-surface);
+  transform: translateY(-1px);
+}
+
+.btn-copy-address:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 80ms;
+}
+
+.btn-copy-address:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--color-accent-primary);
+}
+
+.contact-secondary-links {
+  display: flex;
+  gap: var(--raw-space-6);
+  flex-wrap: wrap;
+  padding-top: var(--raw-space-6);
+  border-top: 1px solid var(--color-border-hairline);
+}
+
+.contact-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  transition: color var(--raw-duration-fast) ease;
+}
+
+.contact-link-item:hover {
+  color: var(--color-accent-primary);
+}
+
+.link-arrow {
+  font-size: 0.85em;
+  color: var(--color-text-muted);
+  transition: transform var(--raw-duration-fast) ease;
+}
+
+.contact-link-item:hover .link-arrow {
+  color: var(--color-accent-primary);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .contact-editorial-box {
+    padding: var(--raw-space-6) var(--raw-space-4);
+  }
+
+  .contact-secondary-links {
+    flex-direction: column;
+    gap: var(--raw-space-3);
+  }
+}
+
+/* ==========================================================================
+   LIGHT APPEARANCE OVERRIDES FOR CONTACT SECTION
+   ========================================================================== */
+[data-appearance="light"] .contact-editorial-box {
+  background-color: var(--glass-luminous-bg);
+  backdrop-filter: blur(var(--glass-luminous-blur));
+  -webkit-backdrop-filter: blur(var(--glass-luminous-blur));
+  border: 1px solid var(--glass-luminous-border);
+  box-shadow: var(--glass-luminous-highlight), var(--glass-luminous-glow);
+}
+
+[data-appearance="light"] #contact-lens.liquid-active {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-appearance="light"] .contact-editorial-box:hover {
+  border-color: var(--glass-luminous-border);
+}
+
+[data-appearance="light"] .btn-copy-address {
+  background-color: #F8FAFC;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  color: var(--color-text-secondary);
+}
+
+[data-appearance="light"] .btn-copy-address:hover {
+  background-color: #F1F5F9;
+  border-color: var(--color-accent-primary);
+  color: var(--color-text-primary);
+}

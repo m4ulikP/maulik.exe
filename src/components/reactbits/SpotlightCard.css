@@ -1,0 +1,62 @@
+/* ==========================================================================
+   REACT BITS — SPOTLIGHT CARD
+   Adapted for MAULIK.EXE editorial design tokens & dark/light appearance.
+   ========================================================================== */
+
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--spotlight-card-surface, var(--color-bg-base));
+  box-shadow: var(--spotlight-card-shadow, none);
+}
+
+.spotlight-card__light,
+.spotlight-card__grain,
+.spotlight-card__border,
+.spotlight-card__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Light & grain layers sit behind foreground content */
+.spotlight-card__light,
+.spotlight-card__grain {
+  z-index: 0;
+  opacity: 0;
+}
+
+.spotlight-card__grain {
+  background-size: 160px 160px;
+  mix-blend-mode: overlay;
+}
+
+/* 1px border stroke and edge glow mask */
+.spotlight-card__border,
+.spotlight-card__edge {
+  z-index: 2;
+  padding: 1px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.spotlight-card__border {
+  background: var(--spotlight-card-border, var(--color-border-subtle));
+}
+
+.spotlight-card__edge {
+  opacity: 0;
+}
+
+/* Ensure foreground children sit clearly above the ambient spotlight layer */
+.spotlight-card > *:not(.spotlight-card__light):not(.spotlight-card__grain):not(.spotlight-card__border):not(.spotlight-card__edge) {
+  position: relative;
+  z-index: 1;
+}

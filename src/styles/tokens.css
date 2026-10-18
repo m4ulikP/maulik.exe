@@ -1,0 +1,532 @@
+/**
+ * MAULIK.EXE — THREE-LAYER DESIGN TOKEN SYSTEM
+ * Architecture based on 'design-system' and 'ui-ux-pro-max' specs:
+ * 1. Primitive Tokens: Raw values (colors, spacing, typography, radii, motion)
+ * 2. Semantic Tokens: Purpose aliases (surfaces, typography roles, accents, status)
+ * 3. Component Tokens: Scoped bindings (navigation, hero, buttons, telemetry visual)
+ */
+
+:root {
+  /* ========================================================================
+     LAYER 1: PRIMITIVE TOKENS (Raw Constants)
+     ======================================================================== */
+
+  /* Raw Palette: Obsidian Foundations */
+  --raw-obsidian-950: #06080C;
+  --raw-obsidian-900: #0B0E15;
+  --raw-obsidian-850: #10141E;
+  --raw-obsidian-800: #161C2A;
+  --raw-obsidian-750: #1D2436;
+  --raw-obsidian-700: #262E44;
+
+  /* Raw Palette: Neutral Slates */
+  --raw-slate-50:  #F8FAFC;
+  --raw-slate-100: #F1F5F9;
+  --raw-slate-200: #E2E8F0;
+  --raw-slate-300: #CBD5E1;
+  --raw-slate-400: #94A3B8;
+  --raw-slate-500: #64748B;
+  --raw-slate-600: #475569;
+
+  /* Raw Palette: Signal & Accents */
+  --raw-mint-300:  #6EE7B7;
+  --raw-mint-400:  #34D399;
+  --raw-mint-500:  #10B981;
+  --raw-mint-600:  #059669;
+
+  --raw-cyan-300:  #67E8F9;
+  --raw-cyan-400:  #22D3EE;
+  --raw-cyan-500:  #06B6D4;
+
+  --raw-amber-400: #FBBF24;
+  --raw-crimson-400: #F87171;
+  --raw-crimson-500: #EF4444;
+
+  /* Raw Spacing Scale */
+  --raw-space-0:   0rem;
+  --raw-space-1:   0.25rem;  /* 4px */
+  --raw-space-2:   0.5rem;   /* 8px */
+  --raw-space-3:   0.75rem;  /* 12px */
+  --raw-space-4:   1rem;     /* 16px */
+  --raw-space-5:   1.25rem;  /* 20px */
+  --raw-space-6:   1.5rem;   /* 24px */
+  --raw-space-8:   2rem;     /* 32px */
+  --raw-space-10:  2.5rem;   /* 40px */
+  --raw-space-12:  3rem;     /* 48px */
+  --raw-space-16:  4rem;     /* 64px */
+  --raw-space-20:  5rem;     /* 80px */
+  --raw-space-24:  6rem;     /* 96px */
+  --raw-space-32:  8rem;     /* 128px */
+
+  /* Raw Typography: Font Families */
+  --raw-font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --raw-font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --raw-font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Raw Typography: Weights */
+  --raw-weight-regular:  400;
+  --raw-weight-medium:   500;
+  --raw-weight-semibold: 600;
+  --raw-weight-bold:     700;
+
+  /* Raw Typography: Font Sizes */
+  --raw-font-size-2xs: 0.68rem;
+  --raw-font-size-xs:  0.75rem;
+  --raw-font-size-sm:  0.85rem;
+  --raw-font-size-base: 1rem;
+  --raw-font-size-lg:  1.15rem;
+  --raw-font-size-xl:  1.35rem;
+  --raw-font-size-2xl: 1.75rem;
+
+  /* Raw Typography: Tracking */
+  --raw-tracking-tightest: -0.04em;
+  --raw-tracking-tight:    -0.02em;
+  --raw-tracking-normal:   0em;
+  --raw-tracking-wide:     0.04em;
+  --raw-tracking-widest:   0.1em;
+
+  /* Raw Border Radii */
+  --raw-radius-none: 0px;
+  --raw-radius-xs:   2px;
+  --raw-radius-sm:   4px;
+  --raw-radius-md:   8px;
+  --raw-radius-lg:   12px;
+  --raw-radius-full: 9999px;
+
+  /* Raw Motion */
+  --raw-duration-instant: 75ms;
+  --raw-duration-fast:    150ms;
+  --raw-duration-normal:  240ms;
+  --raw-duration-smooth:  380ms;
+
+  --raw-ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --raw-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --raw-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+
+  /* ========================================================================
+     LAYER 2: SEMANTIC TOKENS (Role & Purpose Aliases)
+     ======================================================================== */
+
+  /* Surface & Background Roles */
+  --color-bg-base:        var(--raw-obsidian-950);
+  --color-bg-subtle:      var(--raw-obsidian-900);
+  --color-bg-surface:     var(--raw-obsidian-850);
+  --color-bg-elevated:    var(--raw-obsidian-800);
+  --color-bg-overlay:     rgba(6, 8, 12, 0.85);
+
+  /* Text Roles */
+  --color-text-primary:   var(--raw-slate-50);
+  --color-text-secondary: var(--raw-slate-400);
+  --color-text-muted:     var(--raw-slate-500);
+  --color-text-inverse:   var(--raw-obsidian-950);
+  --color-text-accent:    var(--raw-mint-400);
+
+  /* Border Roles */
+  --color-border-hairline: rgba(255, 255, 255, 0.06);
+  --color-border-subtle:   rgba(255, 255, 255, 0.12);
+  --color-border-medium:   rgba(255, 255, 255, 0.22);
+  --color-border-accent:   rgba(52, 211, 153, 0.45);
+  --color-border-cyan:     rgba(34, 211, 238, 0.4);
+
+  /* Accent & Interaction Roles */
+  --color-accent-primary:      var(--raw-mint-400);
+  --color-accent-primary-hover:var(--raw-mint-300);
+  --color-accent-glow:         rgba(16, 185, 129, 0.14);
+
+  --color-accent-secondary:      var(--raw-cyan-400);
+  --color-accent-secondary-hover:var(--raw-cyan-300);
+  --color-accent-secondary-glow: rgba(6, 182, 212, 0.14);
+
+  /* Status Roles */
+  --color-status-nominal: var(--raw-mint-400);
+  --color-status-warning: var(--raw-amber-400);
+  --color-status-alert:   var(--raw-crimson-400);
+
+  /* Focus Indicator Role */
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-primary);
+
+  /* ========================================================================
+     OPTICAL & GLASS MATERIAL SYSTEM (Semantic Material Roles)
+     ======================================================================== */
+  /* Smoked Material: Restrained dark-tinted surfaces (Experience, ordinary cards) */
+  --glass-smoked-bg:           rgba(11, 14, 21, 0.62);
+  --glass-smoked-border:       rgba(255, 255, 255, 0.07);
+  --glass-smoked-border-hover: rgba(255, 255, 255, 0.14);
+  --glass-smoked-blur:         12px;
+  --glass-smoked-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+
+  /* Frosted Material: Softer blur and more diffuse reflections */
+  --glass-frosted-bg:          rgba(16, 20, 30, 0.58);
+  --glass-frosted-border:      rgba(255, 255, 255, 0.08);
+  --glass-frosted-blur:        16px;
+  --glass-frosted-highlight:   inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Luminous Material: Frosted surfaces with slightly stronger reflected light & cyan/mint specular rim */
+  --glass-luminous-bg:           rgba(13, 18, 28, 0.68);
+  --glass-luminous-border:       rgba(34, 211, 238, 0.16);
+  --glass-luminous-border-hover: rgba(52, 211, 153, 0.32);
+  --glass-luminous-blur:         18px;
+  --glass-luminous-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 0.12), inset 0 0 20px -2px rgba(34, 211, 238, 0.04), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --glass-luminous-glow:         0 0 24px -4px rgba(34, 211, 238, 0.08);
+
+  /* Optical Material: High-refraction stacked showcase lenses */
+  --glass-optical-base-tint:   rgba(16, 24, 38, 0.32);
+  --glass-optical-focal-tint:  rgba(34, 211, 238, 0.12);
+  --glass-optical-border:      rgba(255, 255, 255, 0.18);
+  --glass-optical-highlight:   inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.45);
+
+
+  /* ========================================================================
+     LAYER 3: COMPONENT TOKENS (Scoped Element Bindings)
+     ======================================================================== */
+
+  /* Navigation Component */
+  --nav-height:         5.25rem;
+  --nav-bg:             rgba(6, 8, 12, 0.78);
+  --nav-border:         var(--color-border-hairline);
+  --nav-text:           var(--color-text-secondary);
+  --nav-text-hover:     var(--color-text-primary);
+  --nav-badge-bg:       rgba(16, 185, 129, 0.1);
+  --nav-badge-text:     var(--raw-mint-400);
+  --nav-badge-border:   rgba(16, 185, 129, 0.25);
+
+  /* Hero Section Component */
+  --hero-max-width:     84rem;
+  --hero-padding-y:     clamp(var(--raw-space-8), 8vh, var(--raw-space-20));
+  --hero-eyebrow-color: var(--color-text-muted);
+  --hero-title-size:    clamp(2.5rem, 5.2vw + 0.5rem, 4.5rem);
+  --hero-title-leading: 1.08;
+  --hero-body-size:     clamp(1.05rem, 1.2vw + 0.3rem, 1.25rem);
+  --hero-body-leading:  1.6;
+
+  /* Primary Button Component */
+  --btn-primary-bg:           var(--color-accent-primary);
+  --btn-primary-text:         var(--raw-obsidian-950);
+  --btn-primary-border:       transparent;
+  --btn-primary-hover-bg:     var(--raw-mint-300);
+  --btn-primary-hover-glow:   0 0 24px rgba(16, 185, 129, 0.35);
+
+  /* Secondary Button Component */
+  --btn-secondary-bg:         rgba(255, 255, 255, 0.03);
+  --btn-secondary-text:       var(--color-text-primary);
+  --btn-secondary-border:     var(--color-border-subtle);
+  --btn-secondary-hover-bg:   rgba(255, 255, 255, 0.08);
+  --btn-secondary-hover-border:var(--color-border-medium);
+
+  /* Telemetry Visualization Component */
+  --telemetry-card-bg:        var(--color-bg-subtle);
+  --telemetry-card-border:    var(--color-border-subtle);
+  --telemetry-header-bg:      var(--color-bg-surface);
+  --telemetry-header-border:  var(--color-border-hairline);
+  --telemetry-waveform-color: var(--raw-mint-400);
+  --telemetry-harmonic-color: var(--raw-cyan-400);
+  --telemetry-node-color:     var(--raw-mint-300);
+  --telemetry-grid-color:     rgba(148, 163, 184, 0.07);
+  --telemetry-crosshair-color:rgba(34, 211, 238, 0.25);
+  --telemetry-mono-text:      var(--color-text-secondary);
+}
+
+/* ========================================================================
+   THEME 2: CYBER AMBER (Phosphor Gold & Bronze Carbon)
+   ======================================================================== */
+[data-theme="amber"] {
+  /* Surfaces */
+  --color-bg-base:        #08080A;
+  --color-bg-subtle:      #0E0E12;
+  --color-bg-surface:     #14141A;
+  --color-bg-elevated:    #1C1C24;
+  --color-bg-overlay:     rgba(8, 8, 10, 0.88);
+
+  /* Accents */
+  --color-accent-primary:      #F59E0B;
+  --color-accent-primary-hover:#FBBF24;
+  --color-accent-glow:         rgba(245, 158, 11, 0.16);
+
+  --color-accent-secondary:      #FB923C;
+  --color-accent-secondary-hover:#FDBA74;
+  --color-accent-secondary-glow: rgba(251, 146, 60, 0.16);
+
+  /* Text & Border roles */
+  --color-text-accent:    #FBBF24;
+  --color-border-accent:  rgba(245, 158, 11, 0.45);
+  --color-border-cyan:    rgba(251, 146, 60, 0.4);
+
+  /* Status */
+  --color-status-nominal: #F59E0B;
+
+  /* Focus Indicator */
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px #F59E0B;
+
+  /* Component overrides */
+  --nav-bg:             rgba(8, 8, 10, 0.82);
+  --nav-badge-bg:       rgba(245, 158, 11, 0.12);
+  --nav-badge-text:     #F59E0B;
+  --nav-badge-border:   rgba(245, 158, 11, 0.3);
+
+  --btn-primary-bg:           #F59E0B;
+  --btn-primary-text:         #08080A;
+  --btn-primary-hover-bg:     #FBBF24;
+  --btn-primary-hover-glow:   0 0 24px rgba(245, 158, 11, 0.35);
+
+  --telemetry-waveform-color: #F59E0B;
+  --telemetry-harmonic-color: #FB923C;
+  --telemetry-node-color:     #FBBF24;
+
+  /* Material Tokens: Amber variations */
+  --glass-luminous-border:       rgba(251, 191, 36, 0.18);
+  --glass-luminous-border-hover: rgba(245, 158, 11, 0.34);
+  --glass-luminous-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 0.12), inset 0 0 20px -2px rgba(251, 191, 36, 0.04), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --glass-luminous-glow:         0 0 24px -4px rgba(245, 158, 11, 0.08);
+  --glass-optical-focal-tint:    rgba(245, 158, 11, 0.12);
+}
+
+/* ========================================================================
+   THEME 3: MIDNIGHT CYAN (Nordic Cobalt & Electric Ice Cyan)
+   ======================================================================== */
+[data-theme="midnight"] {
+  /* Surfaces */
+  --color-bg-base:        #040812;
+  --color-bg-subtle:      #080E1C;
+  --color-bg-surface:     #0D162A;
+  --color-bg-elevated:    #142038;
+  --color-bg-overlay:     rgba(4, 8, 18, 0.88);
+
+  /* Accents */
+  --color-accent-primary:      #38BDF8;
+  --color-accent-primary-hover:#7DD3FC;
+  --color-accent-glow:         rgba(56, 189, 248, 0.16);
+
+  --color-accent-secondary:      #818CF8;
+  --color-accent-secondary-hover:#A5B4FC;
+  --color-accent-secondary-glow: rgba(129, 140, 248, 0.16);
+
+  /* Text & Border roles */
+  --color-text-accent:    #38BDF8;
+  --color-border-accent:  rgba(56, 189, 248, 0.45);
+  --color-border-cyan:    rgba(129, 140, 248, 0.4);
+
+  /* Status */
+  --color-status-nominal: #38BDF8;
+
+  /* Focus Indicator */
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px #38BDF8;
+
+  /* Component overrides */
+  --nav-bg:             rgba(4, 8, 18, 0.82);
+  --nav-badge-bg:       rgba(56, 189, 248, 0.12);
+  --nav-badge-text:     #38BDF8;
+  --nav-badge-border:   rgba(56, 189, 248, 0.3);
+
+  --btn-primary-bg:           #38BDF8;
+  --btn-primary-text:         #040812;
+  --btn-primary-hover-bg:     #7DD3FC;
+  --btn-primary-hover-glow:   0 0 24px rgba(56, 189, 248, 0.35);
+
+  --telemetry-waveform-color: #38BDF8;
+  --telemetry-harmonic-color: #818CF8;
+  --telemetry-node-color:     #7DD3FC;
+
+  /* Material Tokens: Midnight variations */
+  --glass-luminous-border:       rgba(56, 189, 248, 0.18);
+  --glass-luminous-border-hover: rgba(129, 140, 248, 0.34);
+  --glass-luminous-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 0.12), inset 0 0 20px -2px rgba(56, 189, 248, 0.04), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --glass-luminous-glow:         0 0 24px -4px rgba(56, 189, 248, 0.08);
+  --glass-optical-focal-tint:    rgba(56, 189, 248, 0.12);
+}
+
+/* ========================================================================
+   LIGHT APPEARANCE MODE (Tactile Architectural Editorial Palette)
+   Active when [data-appearance="light"] on root <html>
+   Preserves theme accent identities (Obsidian, Amber, Midnight)
+   ======================================================================== */
+[data-appearance="light"] {
+  /* Surfaces */
+  --color-bg-base:        #F8FAFC;
+  --color-bg-subtle:      #F1F5F9;
+  --color-bg-surface:     #FFFFFF;
+  --color-bg-elevated:    #E2E8F0;
+  --color-bg-overlay:     rgba(248, 250, 252, 0.88);
+
+  /* Typography */
+  --color-text-primary:   #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted:     #475569;
+  --color-text-inverse:   #FFFFFF;
+  --color-text-accent:    #047857;
+
+  /* Borders */
+  --color-border-hairline: rgba(15, 23, 42, 0.08);
+  --color-border-subtle:   rgba(15, 23, 42, 0.12);
+  --color-border-medium:   rgba(15, 23, 42, 0.22);
+  --color-border-accent:   rgba(4, 120, 87, 0.40);
+  --color-border-cyan:     rgba(14, 116, 144, 0.35);
+
+  /* Accents (Obsidian Mint Emerald on Light) */
+  --color-accent-primary:      #059669;
+  --color-accent-primary-hover:#047857;
+  --color-accent-glow:         rgba(5, 150, 105, 0.12);
+
+  --color-accent-secondary:      #0891B2;
+  --color-accent-secondary-hover:#0E7490;
+  --color-accent-secondary-glow: rgba(8, 145, 178, 0.12);
+
+  /* Status */
+  --color-status-nominal: #047857;
+  --color-status-warning: #B45309;
+  --color-status-alert:   #DC2626;
+
+  /* Focus Indicator */
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-primary);
+
+  /* Components */
+  --nav-bg:             rgba(248, 250, 252, 0.85);
+  --nav-text:           var(--color-text-secondary);
+  --nav-text-hover:     var(--color-text-primary);
+  --nav-badge-bg:       rgba(5, 150, 105, 0.1);
+  --nav-badge-text:     #047857;
+  --nav-badge-border:   rgba(5, 150, 105, 0.25);
+
+  --btn-primary-bg:           var(--color-accent-primary);
+  --btn-primary-text:         #FFFFFF;
+  --btn-primary-border:       transparent;
+  --btn-primary-hover-bg:     var(--color-accent-primary-hover);
+  --btn-primary-hover-glow:   0 0 16px rgba(5, 150, 105, 0.25);
+
+  --btn-secondary-bg:         #FFFFFF;
+  --btn-secondary-text:       var(--color-text-primary);
+  --btn-secondary-border:     var(--color-border-subtle);
+  --btn-secondary-hover-bg:   rgba(15, 23, 42, 0.05);
+  --btn-secondary-hover-border:var(--color-border-medium);
+
+  --telemetry-card-bg:        #FFFFFF;
+  --telemetry-card-border:    var(--color-border-subtle);
+  --telemetry-header-bg:      #F8FAFC;
+  --telemetry-header-border:  var(--color-border-hairline);
+  --telemetry-waveform-color: #059669;
+  --telemetry-harmonic-color: #0891B2;
+  --telemetry-node-color:     #10B981;
+  --telemetry-grid-color:     rgba(100, 116, 139, 0.12);
+  --telemetry-crosshair-color:rgba(8, 145, 178, 0.3);
+  --telemetry-mono-text:      var(--color-text-secondary);
+
+  /* Material Tokens: Light Appearance */
+  --glass-smoked-bg:           rgba(255, 255, 255, 0.78);
+  --glass-smoked-border:       rgba(15, 23, 42, 0.08);
+  --glass-smoked-border-hover: rgba(15, 23, 42, 0.16);
+  --glass-smoked-blur:         12px;
+  --glass-smoked-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 0.95), 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+
+  --glass-frosted-bg:          rgba(255, 255, 255, 0.72);
+  --glass-frosted-border:      rgba(15, 23, 42, 0.09);
+  --glass-frosted-blur:        16px;
+  --glass-frosted-highlight:   inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+
+  --glass-luminous-bg:           rgba(255, 255, 255, 0.88);
+  --glass-luminous-border:       rgba(4, 120, 87, 0.22);
+  --glass-luminous-border-hover: rgba(5, 150, 105, 0.38);
+  --glass-luminous-blur:         18px;
+  --glass-luminous-highlight:    inset 0 1px 0 0 rgba(255, 255, 255, 1), inset 0 0 20px -2px rgba(4, 120, 87, 0.04), 0 8px 24px -2px rgba(15, 23, 42, 0.08);
+  --glass-luminous-glow:         0 0 20px -4px rgba(4, 120, 87, 0.08);
+
+  --glass-optical-base-tint:   rgba(255, 255, 255, 0.35);
+  --glass-optical-focal-tint:  rgba(4, 120, 87, 0.10);
+  --glass-optical-border:      rgba(15, 23, 42, 0.14);
+  --glass-optical-highlight:   inset 0 1px 2px rgba(255, 255, 255, 0.95), 0 6px 20px rgba(15, 23, 42, 0.08);
+}
+
+/* Light Mode + Amber Theme */
+[data-appearance="light"][data-theme="amber"] {
+  --color-accent-primary:      #D97706;
+  --color-accent-primary-hover:#B45309;
+  --color-accent-glow:         rgba(217, 119, 6, 0.15);
+
+  --color-accent-secondary:      #EA580C;
+  --color-accent-secondary-hover:#C2410C;
+  --color-accent-secondary-glow: rgba(234, 88, 12, 0.15);
+
+  --color-text-accent:    #B45309;
+  --color-border-accent:  rgba(180, 83, 9, 0.45);
+  --color-border-cyan:    rgba(234, 88, 12, 0.35);
+
+  --color-status-nominal: #B45309;
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px #D97706;
+
+  --nav-badge-bg:       rgba(217, 119, 6, 0.12);
+  --nav-badge-text:     #B45309;
+  --nav-badge-border:   rgba(217, 119, 6, 0.3);
+
+  --btn-primary-bg:           #D97706;
+  --btn-primary-text:         #FFFFFF;
+  --btn-primary-hover-bg:     #B45309;
+  --btn-primary-hover-glow:   0 0 16px rgba(217, 119, 6, 0.25);
+
+  --telemetry-waveform-color: #D97706;
+  --telemetry-harmonic-color: #EA580C;
+  --telemetry-node-color:     #F59E0B;
+}
+
+/* Light Mode + Midnight Theme */
+[data-appearance="light"][data-theme="midnight"] {
+  --color-accent-primary:      #0284C7;
+  --color-accent-primary-hover:#0369A1;
+  --color-accent-glow:         rgba(2, 132, 199, 0.15);
+
+  --color-accent-secondary:      #4F46E5;
+  --color-accent-secondary-hover:#4338CA;
+  --color-accent-secondary-glow: rgba(79, 70, 229, 0.15);
+
+  --color-text-accent:    #0369A1;
+  --color-border-accent:  rgba(3, 105, 161, 0.45);
+  --color-border-cyan:    rgba(79, 70, 229, 0.35);
+
+  --color-status-nominal: #0369A1;
+  --focus-ring: 0 0 0 2px var(--color-bg-base), 0 0 0 4px #0284C7;
+
+  --nav-badge-bg:       rgba(2, 132, 199, 0.12);
+  --nav-badge-text:     #0369A1;
+  --nav-badge-border:   rgba(2, 132, 199, 0.3);
+
+  --btn-primary-bg:           #0284C7;
+  --btn-primary-text:         #FFFFFF;
+  --btn-primary-hover-bg:     #0369A1;
+  --btn-primary-hover-glow:   0 0 16px rgba(2, 132, 199, 0.25);
+
+  --telemetry-waveform-color: #0284C7;
+  --telemetry-harmonic-color: #4F46E5;
+  --telemetry-node-color:     #38BDF8;
+}
+
+/* User-controlled & System-level Reduced Motion Overrides */
+[data-reduced-motion="true"] {
+  --raw-duration-instant: 0.01ms;
+  --raw-duration-fast:    0.01ms;
+  --raw-duration-normal:  0.01ms;
+  --raw-duration-smooth:  0.01ms;
+}
+
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --raw-duration-instant: 0.01ms;
+    --raw-duration-fast:    0.01ms;
+    --raw-duration-normal:  0.01ms;
+    --raw-duration-smooth:  0.01ms;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

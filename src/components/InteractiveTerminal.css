@@ -1,0 +1,1044 @@
+/* ==========================================================================
+   MAULIK.EXE — MINIMALIST INTERACTIVE TERMINAL
+   Art direction inspired by developer terminal portfolios:
+   Clean monospace typography, muted near-black surfaces, side-by-side layout,
+   restrained theme-coordinated accents, and zero excessive cyberpunk noise.
+   ========================================================================== */
+
+/* Modal Backdrop Overlay */
+.term-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(4, 6, 10, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--raw-space-4);
+  /* Note: Coordinated morph & fade transitions are orchestrated via Web Animations API */
+}
+
+.term-modal-backdrop.reduced-motion .term-window-frame {
+  transform: none !important;
+}
+
+/* Window Frame Container (Obsidian Liquid-Glass Console) */
+.term-window-frame {
+  width: 100%;
+  max-width: 1060px;
+  height: min(740px, 88vh);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 22, 32, 0.90) 0%,
+    rgba(8, 12, 18, 0.96) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 32px 80px -16px rgba(0, 0, 0, 0.85),
+              0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+              inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.22),
+              inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4),
+              inset 0 0 24px rgba(52, 211, 153, 0.03);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform, opacity, border-radius;
+}
+
+/* Frame Content Wrap: enables clean content fading during expansion without text stretching */
+.term-frame-content-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Window Header Bar */
+.term-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(14, 19, 28, 0.80);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+}
+
+.term-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.term-status-pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent-primary);
+  box-shadow: 0 0 6px var(--color-accent-glow);
+}
+
+.term-header-title {
+  font-size: 0.78rem;
+  letter-spacing: var(--raw-tracking-wider);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.term-header-env {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+.term-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.term-win-btn {
+  background: transparent;
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--raw-radius-xs);
+  color: var(--color-text-muted);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all var(--raw-duration-fast) ease;
+}
+
+.term-win-btn:focus-visible {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+  color: var(--color-text-primary);
+}
+
+.term-win-btn:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-primary);
+}
+
+.term-close-btn:focus-visible {
+  outline: none;
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.term-close-btn:hover {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Workspace Grid (Main Terminal + Secondary Info Panel) */
+.term-workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.48fr) minmax(280px, 340px);
+  flex: 1;
+  min-height: 0;
+  background: transparent;
+}
+
+/* ==========================================================================
+   MAIN TERMINAL SECTION
+   ========================================================================== */
+.term-main-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: rgba(6, 9, 14, 0.60);
+}
+
+/* Scrollable Output Viewport */
+.term-output-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: text;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-subtle) transparent;
+}
+
+.term-output-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.term-output-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-subtle);
+  border-radius: 4px;
+}
+
+/* Welcome Block */
+.term-welcome-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--color-border-hairline);
+  cursor: default;
+}
+
+.term-ascii-art {
+  font-family: var(--raw-font-mono);
+  font-size: 0.76rem;
+  line-height: 1.18;
+  color: var(--color-accent-primary);
+  margin: 0;
+  user-select: none;
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.term-welcome-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.74rem;
+}
+
+.term-tagline {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.term-welcome-greeting {
+  color: var(--color-text-secondary);
+  font-size: 0.74rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.term-example-commands {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.term-example-label {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: var(--raw-tracking-wider);
+}
+
+.term-example-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 2px;
+}
+
+.term-example-row {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.73rem;
+}
+
+.term-example-cmd {
+  color: var(--color-accent-primary);
+  font-weight: 500;
+}
+
+.term-example-desc {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+.term-welcome-sub {
+  color: var(--color-text-muted);
+  opacity: 0.75;
+  font-size: 0.68rem;
+  padding-top: 2px;
+}
+
+.term-highlight {
+  color: var(--color-accent-primary);
+  font-weight: 500;
+}
+
+/* Executed Command Line */
+.term-executed-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.term-prompt-prefix {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+  user-select: none;
+}
+
+.term-prompt-cmd {
+  color: var(--color-text-primary);
+}
+
+/* Output Item Styling */
+.term-item-content {
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+/* Help Grid */
+.term-help-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+}
+
+.term-section-title {
+  color: var(--color-accent-primary);
+  font-size: 0.72rem;
+  letter-spacing: var(--raw-tracking-wider);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.term-cmd-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.cmd-name {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.cmd-desc {
+  color: var(--color-text-muted);
+}
+
+/* Response / Meta Blocks */
+.term-response-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.term-highlight-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.term-text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.term-text-muted {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+}
+
+/* Whoami Meta Grid */
+.term-meta-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.meta-pair {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+}
+
+.meta-k {
+  color: var(--color-text-muted);
+}
+
+.meta-v {
+  color: var(--color-text-primary);
+}
+
+.text-nominal {
+  color: var(--color-accent-primary);
+}
+
+/* Projects List */
+.term-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.term-project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-hairline);
+  border-left: 2px solid var(--color-accent-primary);
+  border-radius: var(--raw-radius-xs);
+}
+
+.proj-item-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.proj-num {
+  font-size: 0.68rem;
+  color: var(--color-accent-primary);
+}
+
+.proj-name-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--color-text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-subtle);
+  transition: color var(--raw-duration-fast) ease;
+}
+
+.proj-name-link:hover {
+  color: var(--color-accent-primary);
+}
+
+.proj-badge {
+  font-size: 0.64rem;
+  padding: 1px 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-hairline);
+  border-radius: var(--raw-radius-xs);
+  color: var(--color-text-muted);
+}
+
+.proj-desc {
+  font-size: 0.74rem;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.proj-stack {
+  font-size: 0.68rem;
+  color: var(--color-accent-secondary);
+}
+
+.proj-action-hint {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+}
+
+/* Action Feedback */
+.term-action-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 10px;
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 3px solid var(--color-accent-primary);
+  border-radius: var(--raw-radius-xs);
+}
+
+.feedback-status {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: var(--raw-tracking-wider);
+}
+
+/* Contact Card */
+.term-contact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 8px;
+}
+
+.contact-label {
+  color: var(--color-text-muted);
+}
+
+.contact-link {
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  transition: text-decoration var(--raw-duration-fast) ease;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* History List */
+.term-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.history-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.history-num {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.history-cmd {
+  color: var(--color-text-primary);
+}
+
+/* Error Block */
+.term-error-block {
+  padding: 4px 0;
+  color: #f87171;
+}
+
+.error-prefix {
+  font-weight: 500;
+}
+
+.error-hint {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  margin-top: 2px;
+}
+
+/* Active Native Inline Command Prompt Line directly in terminal flow */
+.term-active-prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 0 8px 0;
+  cursor: text;
+  position: relative;
+}
+
+.term-active-prompt-line:focus-within .term-prompt-prefix {
+  text-shadow: 0 0 8px var(--color-accent-glow);
+}
+
+.term-input-field-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.term-native-input {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: var(--raw-font-mono) !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
+  color: var(--color-text-primary) !important;
+  caret-color: var(--color-accent-primary) !important;
+}
+
+.term-native-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Main Terminal Bottom Status Bar */
+.term-bottom-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 16px;
+  background: var(--color-bg-base);
+  border-top: 1px solid var(--color-border-hairline);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  user-select: none;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.status-ready {
+  color: var(--color-accent-primary);
+}
+
+.session-tag {
+  margin-left: auto;
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   SECONDARY INFORMATION PANEL
+   ========================================================================== */
+.term-info-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-subtle);
+  border-left: 1px solid var(--color-border-hairline);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-subtle) transparent;
+}
+
+.term-info-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.term-info-panel::-webkit-scrollbar-thumb {
+  background: var(--color-border-subtle);
+  border-radius: 4px;
+}
+
+.info-block {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-block-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.info-glyph {
+  color: var(--color-accent-primary);
+  font-size: 0.8rem;
+}
+
+.info-heading {
+  letter-spacing: var(--raw-tracking-wider);
+}
+
+/* Identity Info Block */
+.info-identity-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.info-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.info-role {
+  font-size: 0.74rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.info-sub {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.info-session {
+  font-size: 0.64rem;
+  color: var(--color-accent-primary);
+  opacity: 0.85;
+  padding-top: 4px;
+}
+
+.info-divider {
+  height: 1px;
+  background: var(--color-border-hairline);
+  margin: 0 16px;
+}
+
+/* Quick Directives List */
+.info-quick-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  gap: 8px;
+}
+
+.quick-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.quick-cmd-btn {
+  display: grid;
+  grid-template-columns: 18px 84px 1fr;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--raw-radius-xs);
+  color: var(--color-text-secondary);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--raw-font-mono);
+  font-size: 0.74rem;
+  transition: all var(--raw-duration-fast) ease;
+  width: 100%;
+}
+
+.quick-cmd-btn:hover {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-hairline);
+  color: var(--color-text-primary);
+}
+
+.quick-cmd-btn:focus-visible {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
+.quick-cmd-btn:hover .cmd-label {
+  color: var(--color-accent-primary);
+}
+
+.cmd-chip {
+  color: var(--color-text-muted);
+  font-size: 0.68rem;
+}
+
+.cmd-label {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.cmd-hint {
+  color: var(--color-text-muted);
+  font-size: 0.66rem;
+  white-space: nowrap;
+}
+
+/* Info Panel Bottom Bar */
+.info-bottom-bar {
+  margin-top: auto;
+  padding: 10px 18px;
+  border-top: 1px solid var(--color-border-hairline);
+  font-size: 0.64rem;
+  color: var(--color-text-muted);
+  opacity: 0.75;
+  text-align: center;
+  user-select: none;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+.reduced-motion .term-modal-backdrop,
+.reduced-motion .term-window-frame,
+.reduced-motion .term-cursor,
+[data-reduced-motion="true"] .term-modal-backdrop,
+[data-reduced-motion="true"] .term-window-frame,
+[data-reduced-motion="true"] .term-cursor {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.reduced-motion .term-cursor,
+[data-reduced-motion="true"] .term-cursor {
+  opacity: 0.85 !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Tablets & Mobile)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .term-window-frame {
+    height: 92vh;
+    max-height: 92vh;
+  }
+
+  .term-workspace-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    overflow-y: auto;
+  }
+
+  .term-info-panel {
+    border-left: none;
+    border-top: 1px solid var(--color-border-hairline);
+    max-height: 280px;
+  }
+
+  .term-output-scroll {
+    padding: 12px 14px;
+  }
+
+  .term-ascii-art {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .term-modal-backdrop {
+    padding: 8px;
+  }
+
+  .term-window-frame {
+    height: 96vh;
+    max-height: 96vh;
+  }
+
+  .term-ascii-art {
+    display: none; /* Keep mobile view clean and readable */
+  }
+
+  .term-cmd-row {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .session-tag {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   LIGHT APPEARANCE OVERRIDES FOR INTERACTIVE TERMINAL
+   Preserves dark command-line area, provides crisp inspector sidebar,
+   and ensures high-contrast borders and text throughout.
+   ========================================================================== */
+
+/* Terminal Window Frame in Light Mode */
+[data-appearance="light"] .term-window-frame {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 22, 32, 0.95) 0%,
+    rgba(8, 12, 18, 0.98) 100%
+  );
+  border: 1px solid rgba(15, 23, 42, 0.22);
+  box-shadow: 0 28px 70px -12px rgba(15, 23, 42, 0.35),
+              0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+/* Window Header Bar */
+[data-appearance="light"] .term-window-header {
+  background: rgba(14, 19, 28, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-appearance="light"] .term-header-title {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .term-header-env {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .term-win-btn {
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .term-win-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #F8FAFC;
+}
+
+/* Main Command-Line Section: ALWAYS High-Contrast Dark Console */
+[data-appearance="light"] .term-main-section {
+  background: rgba(6, 9, 14, 0.85);
+}
+
+[data-appearance="light"] .term-welcome-block {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-appearance="light"] .term-tagline,
+[data-appearance="light"] .term-welcome-greeting {
+  color: #CBD5E1;
+}
+
+[data-appearance="light"] .term-example-label {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .term-example-desc {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .term-welcome-sub {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .term-prompt-cmd {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .term-native-input {
+  color: #F8FAFC !important;
+}
+
+[data-appearance="light"] .term-item-content {
+  color: #E2E8F0;
+}
+
+[data-appearance="light"] .cmd-name {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .cmd-desc {
+  color: #CBD5E1;
+}
+
+[data-appearance="light"] .term-highlight-text {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .term-text-secondary {
+  color: #CBD5E1;
+}
+
+[data-appearance="light"] .term-text-muted {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .meta-k {
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .meta-v {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .term-project-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+[data-appearance="light"] .proj-name-link {
+  color: #F8FAFC;
+}
+
+[data-appearance="light"] .proj-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+}
+
+[data-appearance="light"] .proj-desc {
+  color: #CBD5E1;
+}
+
+[data-appearance="light"] .term-bottom-bar {
+  background: rgba(10, 14, 22, 0.95);
+  border-top-color: rgba(255, 255, 255, 0.10);
+  color: #94A3B8;
+}
+
+/* Light Terminal Sidebar: Clean, distinct, and legible without overpowering */
+[data-appearance="light"] .term-info-panel {
+  background: #F8FAFC;
+  border-left: 1px solid rgba(15, 23, 42, 0.14);
+}
+
+[data-appearance="light"] .info-block-header {
+  color: #0F172A;
+}
+
+[data-appearance="light"] .info-name {
+  color: #0F172A;
+}
+
+[data-appearance="light"] .info-role {
+  color: #334155;
+}
+
+[data-appearance="light"] .info-sub {
+  color: #475569;
+}
+
+[data-appearance="light"] .info-divider {
+  background: rgba(15, 23, 42, 0.09);
+}
+
+[data-appearance="light"] .quick-cmd-btn {
+  color: #334155;
+}
+
+[data-appearance="light"] .quick-cmd-btn:hover {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.14);
+  color: #0F172A;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+[data-appearance="light"] .quick-cmd-btn .cmd-label {
+  color: #0F172A;
+}
+
+[data-appearance="light"] .quick-cmd-btn:hover .cmd-label {
+  color: var(--color-accent-primary);
+}
+
+[data-appearance="light"] .quick-cmd-btn .cmd-hint {
+  color: #475569;
+}
+
+[data-appearance="light"] .quick-cmd-btn .cmd-chip {
+  color: #64748B;
+}
+
+[data-appearance="light"] .info-bottom-bar {
+  border-top-color: rgba(15, 23, 42, 0.09);
+  color: #64748B;
+  background: #F1F5F9;
+}
+
+@media (max-width: 860px) {
+  [data-appearance="light"] .term-info-panel {
+    border-left: none;
+    border-top: 1px solid rgba(15, 23, 42, 0.14);
+  }
+}

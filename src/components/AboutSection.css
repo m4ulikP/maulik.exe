@@ -1,0 +1,103 @@
+.about-section {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+  scroll-margin-top: calc(var(--nav-height) + 2.5rem);
+}
+
+.about-editorial-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--raw-space-12);
+  margin-top: var(--raw-space-8);
+  align-items: start;
+}
+
+.about-narrative {
+  display: flex;
+  flex-direction: column;
+  gap: var(--raw-space-6);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--color-text-primary);
+}
+
+.about-paragraph {
+  margin: 0;
+  position: relative;
+}
+
+.about-narrative .sr-only {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.about-words-wrap {
+  display: inline;
+}
+
+/* Base unrevealed word: begins in muted slate-gray */
+.about-word {
+  display: inline;
+  color: var(--color-text-primary);
+  opacity: 0.22;
+  will-change: opacity;
+}
+
+/* Reduced Motion: immediately fully revealed */
+.about-section.is-reduced-motion .about-word,
+[data-reduced-motion="true"] .about-word,
+.reduced-motion .about-word {
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-word {
+    opacity: 1 !important;
+  }
+}
+
+.about-meta-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--raw-space-6);
+  padding-left: var(--raw-space-8);
+  border-left: 1px solid var(--color-border-hairline);
+}
+
+.about-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--raw-space-1);
+}
+
+.meta-label {
+  font-size: 0.72rem;
+  color: var(--color-accent-primary);
+  letter-spacing: var(--raw-tracking-widest);
+}
+
+.meta-value {
+  font-size: 1.25rem;
+  font-weight: var(--raw-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.meta-sub {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 900px) {
+  .about-editorial-grid {
+    grid-template-columns: 1fr;
+    gap: var(--raw-space-8);
+  }
+
+  .about-meta-column {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--color-border-hairline);
+    padding-top: var(--raw-space-6);
+  }
+}

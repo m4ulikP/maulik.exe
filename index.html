@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAULIK.EXE — Software &amp; Intelligent Systems</title>
+    <meta name="description" content="Portfolio of Maulik Pandey — Computer Science student exploring backend engineering, intelligent systems, and structural telemetry." />
+    <meta name="author" content="Maulik Pandey" />
+    <meta name="theme-color" content="#06080C" />
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="MAULIK.EXE — Software &amp; Intelligent Systems" />
+    <meta property="og:description" content="Portfolio of Maulik Pandey — Computer Science student exploring backend engineering, intelligent systems, and structural telemetry." />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="MAULIK.EXE — Software &amp; Intelligent Systems" />
+    <meta name="twitter:description" content="Portfolio of Maulik Pandey — Computer Science student exploring backend engineering, intelligent systems, and structural telemetry." />
+
+    <!-- Synchronous early theme, appearance & motion initialization to eliminate flash of unstyled theme -->
+    <script>
+      (function() {
+        try {
+          var savedAppearance = localStorage.getItem('maulik_appearance_pref');
+          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          if (savedAppearance === 'light' || (!savedAppearance && prefersLight)) {
+            document.documentElement.setAttribute('data-appearance', 'light');
+            document.documentElement.style.colorScheme = 'light';
+          } else {
+            document.documentElement.setAttribute('data-appearance', 'dark');
+            document.documentElement.style.colorScheme = 'dark';
+          }
+          var savedTheme = localStorage.getItem('maulik_theme_pref');
+          if (savedTheme === 'amber' || savedTheme === 'midnight' || savedTheme === 'obsidian') {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+          var savedMotion = localStorage.getItem('maulik_motion_pref');
+          var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (prefersReduced || savedMotion === 'reduced') {
+            document.documentElement.setAttribute('data-reduced-motion', 'true');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Web Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

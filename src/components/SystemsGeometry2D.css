@@ -1,0 +1,231 @@
+/* ==========================================================================
+   SYSTEMS GEOMETRY 2D — LIVING DIGITAL CANVAS
+   Multi-plane optical parallax, proximity-reactive elastic geometry,
+   and sophisticated subtle ambient depth.
+   ========================================================================== */
+
+.systems-geometry-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  --px-x: 0px;
+  --px-y: 0px;
+}
+
+/* 1. Soft atmospheric light gradient behind central typography (Depth Plane: 0.5x) */
+.geometry-ambient-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(720px, 85vw);
+  height: min(440px, 60vh);
+  transform: translate(calc(-50% + var(--px-x) * 0.5), calc(-50% + var(--px-y) * 0.5));
+  background: radial-gradient(
+    ellipse at center,
+    var(--color-accent-glow) 0%,
+    rgba(34, 211, 238, 0.015) 35%,
+    transparent 65%
+  );
+  filter: blur(54px);
+  pointer-events: none;
+  opacity: 0.16;
+  transition: opacity 500ms ease, transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Scalable SVG Vector Layer with multi-plane depth separation.
+   Uses soft alpha mask on the SVG itself so vector lines dissolve at the perimeter
+   WITHOUT painting an opaque background scrim over the site-wide canvas. */
+.geometry-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 40%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 40%, transparent 82%);
+}
+
+/* Depth Plane 1: Background Grid & Reticles (0.35x movement) */
+.geom-grid-layer,
+.geom-reticles-layer {
+  transform: translate(calc(var(--px-x) * 0.35), calc(var(--px-y) * 0.35));
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Depth Plane 2: Orbital Arcs (0.65x movement) */
+.geom-arcs-layer {
+  transform: translate(calc(var(--px-x) * 0.65), calc(var(--px-y) * 0.65));
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Depth Plane 3: Vectors & Interactive Nodes (1.0x movement) */
+.geom-vectors-layer,
+.geom-nodes-layer {
+  transform: translate(var(--px-x), var(--px-y));
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Node Proximity Halo: soft glow halo */
+.geom-node-halo {
+  opacity: 0.15;
+  transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.geom-node {
+  transition: fill 420ms ease;
+}
+
+/* ==========================================================================
+   ONE-TIME ENTRANCE ANIMATION & GENTLE AMBIENT PULSE
+   ========================================================================== */
+
+/* Path stroke draw-in keyframes */
+@keyframes geomDrawIn {
+  from {
+    stroke-dashoffset: 1200;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Grid & reticle fade keyframes */
+@keyframes geomFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Node illumination keyframes */
+@keyframes nodeIlluminate {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+
+/* Initial Idle State (hidden before trigger) */
+.geometry-idle .geometry-svg,
+.geometry-idle .geometry-ambient-light {
+  opacity: 0;
+}
+
+/* Animate-in State (triggers once on website entrance) */
+.geometry-animate-in .geometry-ambient-light {
+  animation: geomFadeIn 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.geometry-animate-in .geom-grid-layer,
+.geometry-animate-in .geom-reticles-layer {
+  animation: geomFadeIn 800ms cubic-bezier(0.16, 1, 0.3, 1) 100ms backwards;
+}
+
+.geometry-animate-in .geom-draw-path {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: geomDrawIn 1200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.geometry-animate-in .path-arc-major {
+  animation-delay: 80ms;
+}
+
+.geometry-animate-in .path-arc-inner {
+  animation-delay: 180ms;
+}
+
+.geometry-animate-in .path-vec-left,
+.geometry-animate-in .path-vec-right {
+  animation-delay: 280ms;
+}
+
+.geometry-animate-in .path-vec-lower-left,
+.geometry-animate-in .path-vec-lower-right {
+  animation-delay: 380ms;
+}
+
+/* Staggered node illumination */
+.geometry-animate-in .geom-node {
+  transform-origin: center;
+  animation: nodeIlluminate 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.geometry-animate-in .node-1 { animation-delay: 350ms; }
+.geometry-animate-in .node-2 { animation-delay: 420ms; }
+.geometry-animate-in .node-3 { animation-delay: 490ms; }
+.geometry-animate-in .node-4 { animation-delay: 560ms; }
+.geometry-animate-in .node-5 { animation-delay: 630ms; }
+.geometry-animate-in .node-6 { animation-delay: 350ms; }
+.geometry-animate-in .node-7 { animation-delay: 420ms; }
+.geometry-animate-in .node-8 { animation-delay: 490ms; }
+.geometry-animate-in .node-9 { animation-delay: 560ms; }
+.geometry-animate-in .node-10 { animation-delay: 630ms; }
+
+/* ==========================================================================
+   REDUCED MOTION OR STATIC STATE
+   Immediately visible, no draw-in, no scale, no continuous loop.
+   ========================================================================== */
+.geometry-static .geometry-svg,
+.geometry-static .geometry-ambient-light,
+[data-reduced-motion="true"] .systems-geometry-container .geometry-svg,
+[data-reduced-motion="true"] .systems-geometry-container .geometry-ambient-light,
+[data-reduced-motion="true"] .systems-geometry-container .geom-draw-path,
+[data-reduced-motion="true"] .systems-geometry-container .geom-node,
+[data-reduced-motion="true"] .systems-geometry-container .geom-grid-layer,
+[data-reduced-motion="true"] .systems-geometry-container .geom-arcs-layer,
+[data-reduced-motion="true"] .systems-geometry-container .geom-vectors-layer,
+[data-reduced-motion="true"] .systems-geometry-container .geom-nodes-layer {
+  animation: none !important;
+  opacity: 1 !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .geometry-ambient-light {
+    width: 95vw;
+    height: 60vh;
+  }
+}
+
+/* ==========================================================================
+   LIGHT APPEARANCE OVERRIDES FOR GEOMETRY BACKGROUND
+   Subtle and restrained; does not compete with foreground typography.
+   ========================================================================== */
+[data-appearance="light"] .geometry-ambient-light {
+  opacity: 0.08;
+}
+
+[data-appearance="light"] .geom-grid-layer {
+  opacity: 0.22;
+}
+
+[data-appearance="light"] .geom-arcs-layer {
+  opacity: 0.55;
+}

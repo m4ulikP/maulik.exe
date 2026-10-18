@@ -1,0 +1,39 @@
+.skills-section {
+  position: relative;
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  scroll-margin-top: calc(var(--nav-height) + 2.5rem);
+}
+
+/* Subtle, diffuse cinematic lighting behind skills matrix */
+.skills-section::before {
+  content: '';
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(850px, 88vw);
+  height: 480px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(16, 185, 129, 0.016) 0%,
+    rgba(56, 189, 248, 0.008) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+[data-appearance="light"] .skills-section::before {
+  display: none;
+}
+
+.skills-section > .site-container {
+  position: relative;
+  z-index: 1;
+}
+
+.skills-interactive-container {
+  margin-top: var(--raw-space-8);
+}

@@ -1,0 +1,443 @@
+/* ==========================================================================
+   MAULIK.EXE — LIVING EDITORIAL HERO REDESIGN
+   Expressive typography, living canvas integration, tactile CTA feedback,
+   and scroll-linked storytelling transition into Work.
+   ========================================================================== */
+
+.hero-section {
+  position: relative;
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: calc(var(--nav-height) + clamp(2rem, 5vh, 4rem));
+  padding-bottom: clamp(2rem, 5vh, 3.5rem);
+  overflow: hidden;
+  background-color: transparent;
+  transition: background-color 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Centered Editorial Foreground Container */
+.hero-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.hero-centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 58rem;
+  margin: auto 0;
+  padding: 0 var(--raw-space-4);
+}
+
+.hero-scroll-cue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--raw-space-4);
+  font-size: 0.72rem;
+  letter-spacing: var(--raw-tracking-widest);
+}
+
+/* ==========================================================================
+   PRIMARY FOCAL POINT: NAME TYPOGRAPHY & CHOREOGRAPHED LETTERS
+   ========================================================================== */
+
+.hero-focal-name {
+  font-size: clamp(3.2rem, 8.5vw, 6.4rem);
+  font-weight: var(--raw-weight-bold);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--color-text-primary);
+  margin-bottom: var(--raw-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
+  user-select: none;
+  transition: color 420ms cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-appearance="light"] .hero-focal-name {
+  text-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+.name-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.name-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.name-space {
+  display: inline-block;
+  width: 0.28em;
+}
+
+/* ==========================================================================
+   FROSTED GLASS TYPOGRAPHY FOR "PANDEY" (iPhone Lockscreen Inspired)
+   Milky, translucent off-white material with delicate edge diffusion & soft depth
+   ========================================================================== */
+
+.hero-focal-name .name-word-frosted {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  /* Neutralize the parent's heavy dark text-shadow on the frosted word */
+  text-shadow: none;
+}
+
+.name-word-frosted .name-char {
+  position: relative;
+  color: transparent;
+  /* Milky translucent off-white fill, allowing background ribbon to show through */
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(248, 250, 255, 0.60) 52%,
+    rgba(255, 255, 255, 0.74) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* No metallic wireframe outline or hard strokes */
+  -webkit-text-stroke: 0;
+  /* Subtle edge light-gathering and soft ambient separation */
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.38))
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.22));
+  transition: filter 420ms cubic-bezier(0.16, 1, 0.3, 1),
+              background 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Appearance Mode: Frosted smoked crystal typography with clean contrast */
+[data-appearance="light"] .hero-focal-name .name-word-frosted {
+  text-shadow: none;
+}
+
+[data-appearance="light"] .name-word-frosted .name-char {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.72) 0%,
+    rgba(30, 41, 59, 0.48) 52%,
+    rgba(15, 23, 42, 0.64) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 0;
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.80))
+    drop-shadow(0 2px 8px rgba(15, 23, 42, 0.08));
+}
+
+/* Fallback for browsers without background-clip: text support */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .name-word-frosted .name-char {
+    color: rgba(255, 255, 255, 0.70);
+    -webkit-text-stroke: 0;
+  }
+  [data-appearance="light"] .name-word-frosted .name-char {
+    color: rgba(15, 23, 42, 0.65);
+  }
+}
+
+/* ==========================================================================
+   SUPPORTING TECHNICAL FOCUS BADGE & EDITORIAL INTRO
+   ========================================================================== */
+
+.hero-focus-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(1.25rem, 2.6vh, 1.75rem);
+}
+
+.focus-line-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 18px;
+  font-size: clamp(0.72rem, 0.95vw, 0.82rem);
+  font-weight: var(--raw-weight-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-primary);
+  background: rgba(52, 211, 153, 0.05);
+  border: 1px solid rgba(52, 211, 153, 0.18);
+  border-radius: var(--raw-radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 420ms ease, background-color 420ms ease, border-color 420ms ease;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Short Supporting Introduction */
+.hero-supporting-intro {
+  font-size: clamp(1.02rem, 1.3vw, 1.18rem);
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  max-width: 46ch;
+  margin-bottom: clamp(2rem, 4.2vh, 2.75rem);
+  text-wrap: balance;
+  transition: color 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   REFINED TACTILE CTA INTERACTIONS — LIQUIDGL OPTICAL MATERIALS
+   ========================================================================== */
+
+.hero-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--raw-space-4);
+  flex-wrap: wrap;
+  margin-bottom: clamp(2.25rem, 4.8vh, 3.25rem);
+  position: relative;
+  z-index: 5;
+}
+
+.hero-btn-cta {
+  min-height: 48px;
+  padding: 0 var(--raw-space-6);
+  font-size: 0.88rem;
+  letter-spacing: var(--raw-tracking-wide);
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  isolation: isolate;
+  border-radius: var(--raw-radius-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Internal LiquidGL lens canvas target */
+.hero-cta-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Crisp foreground text and arrow sitting above the lens surface */
+.hero-btn-cta .btn-label,
+.hero-btn-cta .btn-arrow {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.btn-arrow {
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Primary Button: Mint-Cyan Tinted Optical Glass Material */
+.btn-primary {
+  background-color: rgba(49, 214, 160, 0.10);
+  border: 1px solid rgba(49, 214, 160, 0.38);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 16px rgba(49, 214, 160, 0.12);
+  transition: background-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary .btn-label,
+.btn-primary .btn-arrow {
+  color: #E6FFFA;
+  font-weight: var(--raw-weight-semibold);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:hover {
+  background-color: rgba(49, 214, 160, 0.16);
+  border-color: rgba(49, 214, 160, 0.60);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(49, 214, 160, 0.22);
+  transform: translateY(-2px);
+}
+
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-primary:active {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition-duration: 80ms;
+}
+
+.btn-primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-primary);
+}
+
+/* Secondary Button: Neutral Clear Liquid Glass Material */
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: background-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-secondary .btn-label {
+  color: #F8FAFC;
+  font-weight: var(--raw-weight-medium);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0px) scale(0.98);
+  transition-duration: 80ms;
+}
+
+.btn-secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg-base), 0 0 0 4px var(--color-accent-secondary);
+}
+
+/* ==========================================================================
+   SCROLL CUE LINK
+   ========================================================================== */
+
+.scroll-cue-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--raw-duration-fast) ease, transform var(--raw-duration-fast) ease;
+}
+
+.scroll-cue-link:hover {
+  color: var(--color-accent-primary);
+  transform: translateY(2px);
+}
+
+.scroll-cue-indicator {
+  font-size: 0.85rem;
+  color: var(--color-accent-primary);
+  display: inline-block;
+  transition: color 420ms ease;
+  animation: cueBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes cueBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* ==========================================================================
+   LIGHT APPEARANCE & THEME STYLING
+   ========================================================================== */
+
+[data-appearance="light"] .focus-line-badge {
+  background: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.22);
+}
+
+[data-appearance="light"] .btn-primary {
+  background-color: rgba(5, 150, 105, 0.14);
+  border-color: rgba(5, 150, 105, 0.45);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.18), 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+[data-appearance="light"] .btn-primary .btn-label,
+[data-appearance="light"] .btn-primary .btn-arrow {
+  color: #064E3B;
+  text-shadow: none;
+}
+
+[data-appearance="light"] .btn-secondary {
+  background-color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(15, 23, 42, 0.15);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+[data-appearance="light"] .btn-secondary .btn-label {
+  color: #0F172A;
+  text-shadow: none;
+}
+
+/* ==========================================================================
+   REDUCED MOTION & ACCESSIBILITY OVERRIDES
+   ========================================================================== */
+
+[data-reduced-motion="true"] .hero-scroll-title-wrap,
+[data-reduced-motion="true"] .hero-scroll-meta-wrap,
+[data-reduced-motion="true"] .hero-scroll-actions-wrap,
+[data-reduced-motion="true"] .hero-scroll-cue,
+[data-reduced-motion="true"] .hero-section .systems-geometry-container,
+[data-reduced-motion="true"] .scroll-cue-indicator {
+  transform: none !important;
+  opacity: 1 !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .hero-focal-name {
+    font-size: clamp(2.2rem, 9.6vw, 4.0rem);
+    letter-spacing: -0.025em;
+    gap: 0;
+  }
+
+  .focus-line-badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-supporting-intro {
+    font-size: 0.98rem;
+    padding: 0 var(--raw-space-2);
+  }
+
+  .hero-actions-row {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: var(--raw-space-3);
+  }
+
+  .hero-btn-cta {
+    width: 100%;
+  }
+}
