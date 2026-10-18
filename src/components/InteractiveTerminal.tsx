@@ -49,17 +49,36 @@ export const InteractiveTerminal: React.FC<InteractiveTerminalProps> = ({
   const [commandCount, setCommandCount] = useState<number>(0);
   const [uptimeSeconds, setUptimeSeconds] = useState<number>(0);
 
-  // Animation & Rendering State Machine
-  const [isRendered, setIsRendered] = useState<boolean>(isOpen);
+  // Animation & Rendering State Machine (Desktop only > 860px)
+  const [isRendered, setIsRendered] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 860) return false;
+    return isOpen;
+  });
   const [prevIsOpen, setPrevIsOpen] = useState<boolean>(isOpen);
   const [animPhase, setAnimPhase] = useState<'idle' | 'opening' | 'open' | 'closing'>('idle');
 
   if (isOpen !== prevIsOpen) {
     setPrevIsOpen(isOpen);
-    if (isOpen && !isRendered) {
+    const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 860;
+    if (isOpen && !isRendered && !isMobileViewport) {
       setIsRendered(true);
     }
   }
+
+  // Mobile guard: If viewport is <= 860px, ensure terminal is closed and dismissed
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined' && window.innerWidth <= 860) {
+        if (isOpen) {
+          onClose();
+        }
+        setIsRendered(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isOpen, onClose]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const terminalBodyRef = useRef<HTMLDivElement | null>(null);
@@ -953,7 +972,8 @@ export const InteractiveTerminal: React.FC<InteractiveTerminalProps> = ({
     }
   };
 
-  if (!isRendered) return null;
+  const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 860;
+  if (!isRendered || isMobileViewport) return null;
 
   return (
     <div

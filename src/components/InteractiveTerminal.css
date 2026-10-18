@@ -795,6 +795,13 @@
    RESPONSIVE DESIGN (Tablets & Mobile)
    ========================================================================== */
 @media (max-width: 860px) {
+  /* Interactive Terminal is strictly desktop-only: completely hidden and untappable on mobile */
+  .term-modal-backdrop {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+
   .term-window-frame {
     height: 92vh;
     max-height: 92vh;

@@ -140,14 +140,70 @@
   transform: translateY(-1px);
 }
 
+@media (max-width: 860px) {
+  .contact-section {
+    padding-bottom: calc(max(2rem, env(safe-area-inset-bottom)) + 3rem);
+  }
+}
+
 @media (max-width: 640px) {
   .contact-editorial-box {
-    padding: var(--raw-space-6) var(--raw-space-4);
+    padding: clamp(1.25rem, 4.5vw, 1.75rem);
+    gap: clamp(1.5rem, 4vw, 2rem);
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .email-display-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .email-address-link {
+    font-size: clamp(1.15rem, 5.2vw, 1.6rem);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+    max-width: 100%;
+  }
+
+  .btn-copy-address {
+    padding: 8px 18px;
+    min-height: 38px;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .contact-secondary-links {
+    display: flex;
     flex-direction: column;
-    gap: var(--raw-space-3);
+    gap: 10px;
+    width: 100%;
+    padding-top: var(--raw-space-5);
+  }
+
+  .contact-link-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--color-border-hairline);
+    border-radius: var(--raw-radius-xs);
+    font-size: 0.80rem;
+    letter-spacing: 0.03em;
+  }
+
+  .contact-link-item:hover {
+    background: rgba(52, 211, 153, 0.06);
+    border-color: rgba(52, 211, 153, 0.3);
   }
 }
 
@@ -182,4 +238,17 @@
   background-color: #F1F5F9;
   border-color: var(--color-accent-primary);
   color: var(--color-text-primary);
+}
+
+@media (max-width: 640px) {
+  [data-appearance="light"] .contact-link-item {
+    background: #FFFFFF;
+    border-color: rgba(15, 23, 42, 0.10);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  }
+
+  [data-appearance="light"] .contact-link-item:hover {
+    background: var(--color-accent-glow);
+    border-color: var(--color-accent-primary);
+  }
 }

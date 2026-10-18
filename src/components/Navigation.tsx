@@ -155,6 +155,7 @@ const ContactFillIcon: React.FC<{ className?: string }> = ({ className }) => (
 const FIXED_LENS_WIDTH = 88;
 const FIXED_LENS_HEIGHT = 60;
 const FIXED_LENS_TOP = 5;
+const MOBILE_BREAKPOINT = 860;
 
 export const Navigation: React.FC<NavigationProps> = ({
   activeSection = 'home',
@@ -170,6 +171,21 @@ export const Navigation: React.FC<NavigationProps> = ({
   isReducedMotion = false,
   isReady = true,
 }) => {
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+    const onChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
+
   const hasEnteredRef = useRef<boolean>(isReducedMotion || false);
   const [entranceStage, setEntranceStage] = useState<'compact' | 'expanding' | 'settled'>(() => {
     return isReducedMotion ? 'settled' : 'compact';
@@ -275,6 +291,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   // Features relaxed 600–800ms duration, directional overshoot, rebound bounce, and physical settle
   const animateLensTo = useCallback(
     (targetIndex: number, options?: { immediate?: boolean; fromLeft?: number }) => {
+      if (isMobile) return;
       const metrics = getTabMetrics(targetIndex);
       const lensEl = lensRefElement.current;
       if (!metrics || !lensEl) return;
@@ -374,7 +391,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         });
       };
     },
-    [getTabMetrics, isReducedMotion, lensStyle.left]
+    [getTabMetrics, isMobile, isReducedMotion, lensStyle.left]
   );
 
   // Unified Transform Engine: combines immediate press-and-hold scale (1.14×)
@@ -496,13 +513,15 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   // Sync lens with activeSection when NOT dragging
   useEffect(() => {
+    if (isMobile) return;
     if (!isDraggingRef.current) {
       animateLensTo(activeIndex);
     }
-  }, [activeIndex, animateLensTo]);
+  }, [activeIndex, animateLensTo, isMobile]);
 
   // Recalculate immediately on window resize and layout changes via ResizeObserver
   useEffect(() => {
+    if (isMobile) return;
     const handleResize = () => {
       if (!isDraggingRef.current && !(travelAnimRef.current && travelAnimRef.current.playState === 'running')) {
         animateLensTo(activeIndex, { immediate: true });
@@ -524,7 +543,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       window.removeEventListener('resize', handleResize);
       observer?.disconnect();
     };
-  }, [activeIndex, animateLensTo]);
+  }, [activeIndex, animateLensTo, isMobile]);
 
   // Zero-Lag GPU-Accelerated Scroll Progress Bar along top edge of viewport
   useEffect(() => {
@@ -573,7 +592,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   // Full-document snapshot capture that guarantees lower sections are measured in the WebGL texture
   const captureFullSnapshot = useCallback(async (minIntervalMs = 700) => {
-    if (typeof document === 'undefined' || !liquidLensRef.current?.renderer) return;
+    if (isMobile || typeof document === 'undefined' || !liquidLensRef.current?.renderer) return;
     const renderer = liquidLensRef.current.renderer as any;
     if (renderer._destroyed) return;
 
@@ -593,9 +612,9 @@ export const Navigation: React.FC<NavigationProps> = ({
     } catch (err) {
       console.warn('liquidGL snapshot capture warning:', err);
     }
-  }, []);
+  }, [isMobile]);
 
-  // --- LIQUIDGL NAVBAR ENTRANCE ANIMATION CHOREOGRAPHY ---
+  // --- LIQUIDGL / MOBILE NAVBAR ENTRANCE ANIMATION CHOREOGRAPHY ---
   // Coordinates Stage A (compact active pill) -> Stage B (expansion) -> Stage C (resting settled dock)
   useEffect(() => {
     if (isReducedMotion || hasEnteredRef.current) return;
@@ -607,21 +626,23 @@ export const Navigation: React.FC<NavigationProps> = ({
     }, 140);
 
     // Stage B -> Stage C: Complete expansion and transition to settled resting state (~920ms expansion)
-    // Settle occurs at 140ms + 920ms = 1060ms after mount
+    // Settle occurs at 140ms + 780ms = 920ms after mount
     const settleTimer = window.setTimeout(() => {
       setEntranceStage('settled');
       hasEnteredRef.current = true;
-      requestAnimationFrame(() => {
-        liquidLensRef.current?.updateMetrics();
-        captureFullSnapshot(0);
-      });
-    }, 1060);
+      if (!isMobile) {
+        requestAnimationFrame(() => {
+          liquidLensRef.current?.updateMetrics();
+          captureFullSnapshot(0);
+        });
+      }
+    }, 920);
 
     return () => {
       window.clearTimeout(expandTimer);
       window.clearTimeout(settleTimer);
     };
-  }, [isReady, isReducedMotion, captureFullSnapshot]);
+  }, [isReady, isReducedMotion, isMobile, captureFullSnapshot]);
 
   // Continuously update LiquidGL metrics during expansion so refraction, bevel, and specular highlights move seamlessly
   useEffect(() => {
@@ -641,7 +662,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    if (isReducedMotion) {
+    if (isMobile || isReducedMotion) {
       if (liquidLensRef.current) {
         try {
           liquidLensRef.current.destroy();
@@ -742,7 +763,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         liquidLensRef.current = null;
       }
     };
-  }, [isReducedMotion, captureFullSnapshot]);
+  }, [isMobile, isReducedMotion, captureFullSnapshot]);
 
   // Immediate, synchronized theme refresh strategy for LiquidGL
   const refreshThemeSnapshot = useCallback(() => {
@@ -753,6 +774,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     document.documentElement.setAttribute('data-appearance', appearance);
     document.documentElement.style.colorScheme = appearance;
     void document.documentElement.offsetHeight; // synchronous layout/style reflow
+
+    if (isMobile) return;
 
     // 2. Update lens optical tint immediately
     if (liquidLensRef.current && typeof liquidLensRef.current.setTint === 'function') {
@@ -796,7 +819,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     }, 450);
 
     return () => clearTimeout(settleTimer);
-  }, [theme, appearance]);
+  }, [theme, appearance, isMobile]);
 
   // Synchronize tint and trigger immediate background snapshot refresh when theme or appearance changes
   useEffect(() => {
@@ -833,8 +856,8 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   // Subtle Cursor-Responsive Motion: reacts subtly to cursor hovering over the active ring
   const handleDockPointerMove = (e: React.PointerEvent<HTMLElement>) => {
-    // If dragging or pointer is down, drag handler manages motion
-    if (isPointerDownRef.current || isReducedMotion) return;
+    // If mobile, dragging, or pointer is down, drag handler manages motion
+    if (isMobile || isPointerDownRef.current || isReducedMotion) return;
     // Desktop hover only (mouse)
     if (e.pointerType !== 'mouse') return;
 
@@ -861,7 +884,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   const handleDockPointerLeave = () => {
-    if (isPointerDownRef.current) return;
+    if (isMobile || isPointerDownRef.current) return;
     targetHoverXRef.current = 0;
     targetHoverYRef.current = 0;
     targetRotateXRef.current = 0;
@@ -871,7 +894,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   // --- ROBUST DRAG-VS-CLICK INTERACTION HANDLING WITH DYNAMIC SIZING & SCALE RETENTION ---
   const handleDockPointerDown = (e: React.PointerEvent<HTMLElement>) => {
-    if (e.button !== 0) return; // Primary pointer button only
+    if (isMobile || e.button !== 0) return; // Desktop primary pointer button only
 
     const activePointerId = e.pointerId;
     pointerStartPosRef.current = { x: e.clientX, y: e.clientY };
@@ -1040,11 +1063,15 @@ export const Navigation: React.FC<NavigationProps> = ({
     if (item) {
       beginProgrammaticNav();
       setCommittedSection(item.id);
-      animateLensTo(index);
+      if (!isMobile) {
+        animateLensTo(index);
+      }
       item.onClick?.();
-      window.setTimeout(() => {
-        captureFullSnapshot(400);
-      }, 750);
+      if (!isMobile) {
+        window.setTimeout(() => {
+          captureFullSnapshot(400);
+        }, 750);
+      }
     }
   };
 
@@ -1083,20 +1110,22 @@ export const Navigation: React.FC<NavigationProps> = ({
               <div className="nav-dock-backdrop-border" />
             </div>
 
-            {/* Movable Liquid-Glass Ring Lens */}
-            <div
-              id="nav-glass-lens"
-              ref={lensRefElement}
-              className={`nav-glass-lens ${isPressed ? 'is-pressed' : ''} ${isDragging ? 'lens-active-drag' : ''}`}
-              style={{
-                left: `${lensStyle.left}px`,
-                top: `${FIXED_LENS_TOP}px`,
-                width: `${FIXED_LENS_WIDTH}px`,
-                height: `${FIXED_LENS_HEIGHT}px`,
-              }}
-              title="Draggable liquid-glass active indicator"
-              aria-hidden="true"
-            />
+            {/* Movable Liquid-Glass Ring Lens (Desktop Only) */}
+            {!isMobile && (
+              <div
+                id="nav-glass-lens"
+                ref={lensRefElement}
+                className={`nav-glass-lens ${isPressed ? 'is-pressed' : ''} ${isDragging ? 'lens-active-drag' : ''}`}
+                style={{
+                  left: `${lensStyle.left}px`,
+                  top: `${FIXED_LENS_TOP}px`,
+                  width: `${FIXED_LENS_WIDTH}px`,
+                  height: `${FIXED_LENS_HEIGHT}px`,
+                }}
+                title="Draggable liquid-glass active indicator"
+                aria-hidden="true"
+              />
+            )}
 
             {/* 6 Centered Navigation Tabs (Icons above Labels) - Independent, Stable Layout */}
             {navItems.map((item, index) => {
@@ -1116,6 +1145,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   role="tab"
                   data-tab-index={index}
                   aria-selected={isCommittedActive}
+                  aria-label={item.label}
                   aria-controls={item.id}
                   aria-hidden={entranceStage === 'compact' && index > 0 ? true : undefined}
                   tabIndex={entranceStage === 'compact' && index > 0 ? -1 : (isCommittedActive ? 0 : -1)}
@@ -1123,11 +1153,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onClick={() => handleTabClick(index)}
                 >
                   <span className="tab-icon-wrap" aria-hidden="true">
-                    <span className="tab-icon-layer tab-icon-outline">
-                      <OutlineIcon className="tab-icon" />
-                    </span>
-                    <span className="tab-icon-layer tab-icon-filled">
-                      <FilledIcon className="tab-icon" />
+                    <span className="tab-icon-circle">
+                      <span className="tab-icon-layer tab-icon-outline">
+                        <OutlineIcon className="tab-icon" />
+                      </span>
+                      <span className="tab-icon-layer tab-icon-filled">
+                        <FilledIcon className="tab-icon" />
+                      </span>
                     </span>
                   </span>
                   <span className="tab-label">{item.label}</span>
@@ -1138,20 +1170,22 @@ export const Navigation: React.FC<NavigationProps> = ({
         </div>
       </header>
 
-      {/* Floating Developer Terminal Trigger (Discreet bottom-right secondary placement) */}
-      <button
-        type="button"
-        id="terminal-floating-trigger"
-        className={`terminal-floating-trigger font-mono nav-entrance-${entranceStage}`}
-        onClick={onTerminalClick}
-        aria-label="Open Interactive Developer Terminal (`)"
-        title="Open Interactive Terminal (`)"
-        data-liquid-ignore=""
-      >
-        <span className="term-icon" aria-hidden="true">&gt;_</span>
-        <span className="term-label">TERMINAL</span>
-        <kbd className="term-shortcut" aria-hidden="true">`</kbd>
-      </button>
+      {/* Floating Developer Terminal Trigger (Desktop only > 860px) */}
+      {!isMobile && (
+        <button
+          type="button"
+          id="terminal-floating-trigger"
+          className={`terminal-floating-trigger font-mono nav-entrance-${entranceStage}`}
+          onClick={onTerminalClick}
+          aria-label="Open Interactive Developer Terminal (`)"
+          title="Open Interactive Terminal (`)"
+          data-liquid-ignore=""
+        >
+          <span className="term-icon" aria-hidden="true">&gt;_</span>
+          <span className="term-label">TERMINAL</span>
+          <kbd className="term-shortcut" aria-hidden="true">`</kbd>
+        </button>
+      )}
     </>
   );
 };

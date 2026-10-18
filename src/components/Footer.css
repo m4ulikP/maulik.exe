@@ -421,6 +421,12 @@
   }
 }
 
+@media (max-width: 860px) {
+  .site-footer {
+    padding-bottom: calc(max(24px, env(safe-area-inset-bottom)) + 76px);
+  }
+}
+
 /* ==========================================================================
    LIGHT APPEARANCE OVERRIDES
    ========================================================================== */

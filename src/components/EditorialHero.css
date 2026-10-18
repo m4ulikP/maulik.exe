@@ -412,6 +412,18 @@
    RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 
+@media (max-width: 860px) {
+  .hero-section {
+    min-height: 100svh;
+    padding-top: clamp(2.5rem, 6vh, 4rem);
+    padding-bottom: calc(max(16px, env(safe-area-inset-bottom)) + 76px);
+  }
+
+  .hero-scroll-cue {
+    margin-bottom: calc(max(8px, env(safe-area-inset-bottom)) + 12px);
+  }
+}
+
 @media (max-width: 768px) {
   .hero-focal-name {
     font-size: clamp(2.2rem, 9.6vw, 4.0rem);

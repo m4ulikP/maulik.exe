@@ -32,3 +32,6 @@ scratch/
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*

@@ -85,6 +85,9 @@
 /* Project Visual Presentation */
 .project-visual-wrapper {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .editorial-preview-widget {
@@ -95,6 +98,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--raw-space-3);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .editorial-preview-widget.spotlight-card {
@@ -254,6 +260,9 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   font-size: 0.72rem;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--color-border-hairline);
@@ -265,8 +274,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 6px;
   border-bottom: 1px solid var(--color-border-hairline);
   padding-bottom: 5px;
+  flex-wrap: wrap;
 }
 
 .studio-lead-badge {
@@ -285,19 +296,26 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .lead-meta-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .lead-target {
   font-size: 0.76rem;
   color: var(--color-text-primary);
   font-weight: var(--raw-weight-medium);
+  word-break: break-word;
+  min-width: 0;
 }
 
 .lead-dedup-badge {
@@ -309,6 +327,7 @@
   color: var(--raw-mint-400);
   letter-spacing: 0.03em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .studio-pipeline-strip {
@@ -318,6 +337,9 @@
   font-size: 0.64rem;
   overflow-x: auto;
   scrollbar-width: none;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .studio-pipeline-strip::-webkit-scrollbar {
@@ -359,6 +381,9 @@
   gap: 6px;
   font-size: 0.65rem;
   color: var(--color-text-muted);
+  flex-wrap: wrap;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .lead-action-status .action-dot {
@@ -978,6 +1003,9 @@
   .project-reverse {
     grid-template-columns: 1fr;
     gap: var(--raw-space-5);
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .project-reverse .project-visual-wrapper {
@@ -990,6 +1018,64 @@
 
   .modal-body {
     padding: var(--raw-space-5) var(--raw-space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .project-entry {
+    padding: clamp(1rem, 3.5vw, 1.4rem);
+  }
+
+  .editorial-preview-widget {
+    padding: 12px 10px;
+  }
+
+  .widget-header {
+    font-size: 0.64rem;
+    flex-wrap: wrap;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  .widget-footer {
+    font-size: 0.62rem;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.35;
+  }
+
+  .outreach-studio-preview {
+    padding: 7px 8px;
+    gap: 6px;
+  }
+
+  .studio-lead-badge,
+  .studio-lead-status {
+    font-size: 0.60rem;
+  }
+
+  .lead-target {
+    font-size: 0.70rem;
+  }
+
+  .lead-dedup-badge {
+    font-size: 0.58rem;
+    padding: 1px 4px;
+  }
+
+  .studio-pipeline-strip {
+    font-size: 0.58rem;
+    gap: 3px;
+    padding-bottom: 2px;
+  }
+
+  .pipe-stage {
+    padding: 1.5px 4px;
+  }
+
+  .lead-action-status {
+    font-size: 0.58rem;
+    line-height: 1.3;
   }
 }
 

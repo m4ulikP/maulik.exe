@@ -156,7 +156,7 @@ export function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Listen to keyboard shortcut (backtick `) to toggle interactive terminal
+  // Listen to keyboard shortcut (backtick `) to toggle interactive terminal (Desktop only > 860px)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeEl = document.activeElement;
@@ -166,6 +166,7 @@ export function App() {
         (activeEl as HTMLElement)?.isContentEditable;
 
       if (e.key === '`' && !isInput && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (typeof window !== 'undefined' && window.innerWidth <= 860) return;
         e.preventDefault();
         setIsTerminalOpen((prev) => !prev);
       }
@@ -173,6 +174,17 @@ export function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Ensure terminal closes automatically if viewport is resized down to mobile (<= 860px)
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined' && window.innerWidth <= 860 && isTerminalOpen) {
+        setIsTerminalOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isTerminalOpen]);
 
   // Synchronize active section with the section currently visible while scrolling
   useEffect(() => {
@@ -287,7 +299,10 @@ export function App() {
         onAboutClick={() => scrollTo('about')}
         onSkillsClick={() => scrollTo('skills')}
         onContactClick={() => scrollTo('contact')}
-        onTerminalClick={() => setIsTerminalOpen(true)}
+        onTerminalClick={() => {
+          if (typeof window !== 'undefined' && window.innerWidth <= 860) return;
+          setIsTerminalOpen(true);
+        }}
         theme={theme}
         onThemeChange={handleThemeChange}
         appearance={appearance}

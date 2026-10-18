@@ -495,6 +495,15 @@
   flex-shrink: 0;
 }
 
+.tab-icon-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tab-icon-layer {
   position: absolute;
   inset: 0;
@@ -718,80 +727,359 @@ body[data-case-study-open="true"] .terminal-floating-trigger {
 /* ==========================================================================
    RESPONSIVE DESIGN (TABLET & MOBILE)
    ========================================================================== */
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+   Expanding Active-Pill Dock Design (Reference Image Compliant)
+   ========================================================================== */
+@keyframes labelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @media (max-width: 860px) {
-  /* Elevate floating terminal trigger on mobile so it never collides with bottom dock */
+  /* Completely hide floating developer terminal trigger on mobile */
   .terminal-floating-trigger {
-    bottom: 80px;
-    right: 16px;
-    padding: 0 12px 0 10px;
-    height: 34px;
-    font-size: 0.68rem;
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
   }
 
-  /* Compact Bottom Dock Navigation on Mobile / Small Screens */
+  /* Completely remove LiquidGL lens and backdrop elements on mobile */
+  .nav-glass-lens,
+  #nav-glass-lens,
+  .nav-dock-backdrop {
+    display: none !important;
+  }
+
+  /* Compact Dark Rounded Mobile Navigation Dock */
   .nav-dock-bar {
-    --dock-compact-width: min(76px, calc(100vw - 20px));
-    --dock-full-width: min(440px, calc(100vw - 20px));
+    --mobile-dock-compact-width: 114px;
+    --mobile-dock-full-width: min(440px, calc(100vw - 20px));
     position: fixed;
     top: auto;
     bottom: max(16px, env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
-    width: var(--dock-full-width);
+    width: var(--mobile-dock-full-width);
+    height: 52px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    background: rgba(8, 12, 16, 0.88);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    gap: 4px;
+    /* Obsidian dark background with subtle border and solid fallback */
+    background: #0B0E12;
+    background: rgba(11, 14, 18, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 14px 38px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 4px;
+    border-radius: 9999px;
+    padding: 4px 6px;
     z-index: 105;
+    box-sizing: border-box;
+    pointer-events: auto;
+    transition: width 620ms cubic-bezier(0.16, 1, 0.3, 1), transform 300ms ease;
   }
 
+  /* Initial Mobile Entrance Animation: Home-only compact -> 6-item dock */
+  .nav-dock-bar.nav-entrance-compact {
+    width: var(--mobile-dock-compact-width);
+    overflow: hidden;
+  }
+
+  .nav-dock-bar.nav-entrance-expanding,
+  .nav-dock-bar.nav-entrance-settled {
+    width: var(--mobile-dock-full-width);
+  }
+
+  /* Staggered entrance for inactive items during initial mount */
+  .nav-dock-bar.nav-entrance-compact .nav-dock-tab:not([data-tab-index="0"]) {
+    opacity: 0 !important;
+    transform: scale(0.6) translateY(8px) !important;
+    pointer-events: none !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+  }
+
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab:not([data-tab-index="0"]) {
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                max-width 380ms cubic-bezier(0.16, 1, 0.3, 1),
+                width 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab[data-tab-index="1"] { transition-delay: 80ms; }
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab[data-tab-index="2"] { transition-delay: 130ms; }
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab[data-tab-index="3"] { transition-delay: 180ms; }
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab[data-tab-index="4"] { transition-delay: 230ms; }
+  .nav-dock-bar.nav-entrance-expanding .nav-dock-tab[data-tab-index="5"] { transition-delay: 280ms; }
+
+  /* 3.1 INACTIVE ITEM STATE: Compact Circular Icon-Only Button */
   .nav-dock-tab {
-    width: calc((100% - 20px) / 6);
-    padding: 6px 2px 5px;
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 40px;
+    max-width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.52);
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: max-width 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                padding 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 450ms ease,
+                box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .tab-icon {
+  .nav-dock-tab:hover:not(.tab-active) {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .nav-dock-tab .tab-icon-wrap {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-dock-tab .tab-icon-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.52);
+    transition: background-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 450ms ease;
+  }
+
+  .nav-dock-tab .tab-icon {
     width: 18px;
     height: 18px;
+    display: block;
+    transition: fill 450ms cubic-bezier(0.22, 1, 0.36, 1),
+                stroke 450ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .tab-label {
-    font-size: 0.62rem;
+  /* CRITICAL RULE: Inactive items show icons only. They must never display section labels when inactive. */
+  .nav-dock-tab .tab-label {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    margin-left: 0;
+    pointer-events: none;
+    font-family: var(--font-sans, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #FFFFFF;
+    line-height: 1;
+    transform: translateX(-6px);
+    transition: max-width 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 360ms cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0s linear 340ms,
+                margin-left 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: max-width, opacity, transform;
+  }
+
+  /* 3.2 ACTIVE ITEM STATE: Horizontally Elongated Rounded Pill with Mint Icon Circle */
+  .nav-dock-tab.tab-active {
+    max-width: 140px;
+    height: 40px;
+    padding: 2px 14px 2px 2px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    color: #FFFFFF;
+  }
+
+  .nav-dock-tab.tab-active .tab-icon-circle {
+    background: var(--color-accent-primary, #34D399);
+    box-shadow: 0 0 12px var(--color-accent-glow, rgba(52, 211, 153, 0.5));
+    color: #062A1E;
+  }
+
+  /* Dark icon artwork inside the bright mint circle for high contrast */
+  .nav-dock-tab.tab-active .tab-icon-filled .tab-icon {
+    fill: #062A1E !important;
+  }
+
+  .nav-dock-tab.tab-active .tab-icon-outline .tab-icon {
+    stroke: #062A1E !important;
+  }
+
+  /* Active Section Name Label */
+  .nav-dock-tab.tab-active .tab-label {
+    max-width: 90px;
+    opacity: 1;
+    visibility: visible;
+    margin-left: 8px;
+    transform: translateX(0);
+    pointer-events: auto;
+    transition: max-width 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 400ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+                visibility 0s linear 0s,
+                margin-left 540ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
 @media (max-width: 480px) {
+
   .nav-dock-bar {
+    --mobile-dock-compact-width: 106px;
     width: calc(100vw - 16px);
     bottom: max(12px, env(safe-area-inset-bottom));
-    padding: 3px;
+    padding: 3px 5px;
+    height: 50px;
+    min-height: 50px;
+    gap: 2px;
+  }
+
+  .nav-dock-bar.nav-entrance-compact {
+    width: var(--mobile-dock-compact-width);
+  }
+
+  .nav-dock-bar.nav-entrance-expanding,
+  .nav-dock-bar.nav-entrance-settled {
+    width: calc(100vw - 16px);
   }
 
   .nav-dock-tab {
-    padding: 5px 1px 4px;
+    min-width: 38px;
+    max-width: 38px;
+    height: 38px;
   }
 
-  .tab-icon-wrap {
-    width: 20px;
-    height: 20px;
+  .nav-dock-tab .tab-icon-wrap {
+    width: 36px;
+    height: 36px;
   }
 
-  .tab-icon {
+  .nav-dock-tab .tab-icon-circle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-dock-tab:not(.tab-active) .tab-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .nav-dock-tab.tab-active {
+    max-width: 130px;
+    height: 38px;
+    padding: 2px 12px 2px 2px;
+  }
+
+  .nav-dock-tab.tab-active .tab-label {
+    font-size: 0.74rem;
+    margin-left: 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-dock-bar {
+    --mobile-dock-compact-width: 98px;
+    width: calc(100vw - 10px);
+    padding: 3px 3px;
+    height: 48px;
+    min-height: 48px;
+    gap: 1px;
+  }
+
+  .nav-dock-bar.nav-entrance-compact {
+    width: var(--mobile-dock-compact-width);
+  }
+
+  .nav-dock-bar.nav-entrance-expanding,
+  .nav-dock-bar.nav-entrance-settled {
+    width: calc(100vw - 10px);
+  }
+
+  .nav-dock-tab {
+    min-width: 35px;
+    max-width: 35px;
+    height: 35px;
+  }
+
+  .nav-dock-tab .tab-icon-wrap {
+    width: 33px;
+    height: 33px;
+  }
+
+  .nav-dock-tab .tab-icon-circle {
+    width: 31px;
+    height: 31px;
+  }
+
+  .nav-dock-tab:not(.tab-active) .tab-icon {
     width: 16px;
     height: 16px;
   }
 
-  .tab-label {
-    font-size: 0.58rem;
-    letter-spacing: 0;
+  .nav-dock-tab.tab-active {
+    max-width: 122px;
+    height: 35px;
+    padding: 1.5px 10px 1.5px 1.5px;
   }
 
-  .terminal-floating-trigger {
-    bottom: 74px;
-    right: 12px;
+  .nav-dock-tab.tab-active .tab-icon-wrap {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-dock-tab.tab-active .tab-icon-circle {
+    width: 31px;
+    height: 31px;
+  }
+
+  .nav-dock-tab.tab-active .tab-icon-filled .tab-icon,
+  .nav-dock-tab.tab-active .tab-icon-outline .tab-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .nav-dock-tab.tab-active .tab-label {
+    font-size: 0.70rem;
+    margin-left: 5px;
   }
 }
 
@@ -901,9 +1189,54 @@ body[data-case-study-open="true"] .terminal-floating-trigger {
 
 @media (max-width: 860px) {
   [data-appearance="light"] .nav-dock-bar {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.94);
     border: 1px solid rgba(15, 23, 42, 0.12);
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  }
+
+  [data-appearance="light"] .nav-dock-tab:not(.tab-active) {
+    background: rgba(15, 23, 42, 0.04);
+    border-color: rgba(15, 23, 42, 0.05);
+    color: rgba(15, 23, 42, 0.55);
+  }
+
+  [data-appearance="light"] .nav-dock-tab:hover:not(.tab-active) {
+    background: rgba(15, 23, 42, 0.08);
+    color: #0F172A;
+  }
+
+  [data-appearance="light"] .nav-dock-tab.tab-active {
+    background: rgba(15, 23, 42, 0.07);
+    border-color: rgba(15, 23, 42, 0.10);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  }
+
+  [data-appearance="light"] .nav-dock-tab.tab-active .tab-icon-circle {
+    background: var(--color-accent-primary, #059669);
+    box-shadow: 0 2px 10px rgba(5, 150, 105, 0.35);
+    color: #FFFFFF;
+  }
+
+  [data-appearance="light"] .nav-dock-tab.tab-active .tab-icon-filled .tab-icon {
+    fill: #FFFFFF !important;
+  }
+
+  [data-appearance="light"] .nav-dock-tab.tab-active .tab-icon-outline .tab-icon {
+    stroke: #FFFFFF !important;
+  }
+
+  [data-appearance="light"] .nav-dock-tab.tab-active .tab-label {
+    color: #0F172A;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dock-bar,
+  .nav-dock-tab,
+  .tab-icon-circle,
+  .tab-label {
+    transition: none !important;
+    animation: none !important;
   }
 }
 
