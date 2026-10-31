@@ -1,0 +1,410 @@
+/* ==========================================================================
+   PAGE LOADER — MAULIK PANDEY
+   Neo-Brutalist Typographic & Geometric Logo Construction
+   Theme-aware (Paper & Cyber), Zero Layout Shift, Reduced-Motion Respecting
+   ========================================================================== */
+
+.page-loader-root {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-app);
+  background-image: radial-gradient(var(--border-color-muted) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+  color: var(--color-text-primary);
+  user-select: none;
+  overflow: hidden;
+  padding: clamp(1.25rem, 3.5vw, 2.5rem);
+  box-sizing: border-box;
+  transform: translateY(0);
+  transition: transform 0.42s cubic-bezier(0.85, 0, 0.15, 1),
+              opacity 0.42s cubic-bezier(0.85, 0, 0.15, 1);
+  will-change: transform, opacity;
+}
+
+/* Exit Curtain Slide */
+.page-loader-root.is-exiting {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Four Corner Architectural Crosshairs */
+.loader-crosshair {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.loader-crosshair.crosshair-tl {
+  top: 1.25rem;
+  left: 1.25rem;
+}
+
+.loader-crosshair.crosshair-tr {
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+.loader-crosshair.crosshair-bl {
+  bottom: 1.25rem;
+  left: 1.25rem;
+}
+
+.loader-crosshair.crosshair-br {
+  bottom: 1.25rem;
+  right: 1.25rem;
+}
+
+/* --- Top Header Metadata Bar --- */
+.loader-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: clamp(0.7rem, 1.8vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding-bottom: 1rem;
+  border-bottom: var(--border-width-sm) dashed var(--border-color-muted);
+  box-sizing: border-box;
+}
+
+.loader-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loader-header-title {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.loader-header-sep {
+  color: var(--color-text-muted);
+}
+
+.loader-header-sub {
+  color: var(--color-text-secondary);
+}
+
+.loader-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.loader-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.65rem;
+  background-color: var(--bg-surface);
+  border: var(--border-width-sm) solid var(--border-color-default);
+  box-shadow: 2px 2px 0px var(--color-ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.loader-status-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-action);
+  transition: background-color 0.25s ease;
+}
+
+.page-loader-root.is-ready .loader-status-pip {
+  background-color: var(--accent-highlight);
+  box-shadow: 0 0 8px var(--accent-highlight);
+}
+
+/* --- Central Composition Area --- */
+.loader-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 3vh, 2rem);
+  width: 100%;
+  max-width: 960px;
+  margin: auto;
+  text-align: center;
+}
+
+/* Geometric Logo Construction */
+.loader-logo-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-logo-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(52px, 7vw, 68px);
+  height: clamp(52px, 7vw, 68px);
+  background-color: var(--accent-highlight);
+  border: var(--border-width-md) solid var(--border-color-default);
+  box-shadow: var(--shadow-hard-sm);
+  animation: logoTileSnap 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, box-shadow;
+}
+
+@keyframes logoTileSnap {
+  0% {
+    transform: scale(0.65) rotate(-6deg);
+    opacity: 0;
+    box-shadow: 0px 0px 0px var(--color-ink);
+  }
+  60% {
+    transform: scale(1.08) rotate(1deg);
+    opacity: 1;
+    box-shadow: 6px 6px 0px var(--color-ink);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    box-shadow: 3px 3px 0px var(--color-ink);
+  }
+}
+
+.loader-logo-glyph {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  font-weight: 900;
+  color: var(--color-on-accent);
+  letter-spacing: -0.05em;
+  display: inline-flex;
+  align-items: baseline;
+  animation: glyphAppear 0.4s ease 0.15s both;
+}
+
+@keyframes glyphAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loader-cursor-pulse {
+  display: inline-block;
+  animation: cursorBlink 0.7s steps(2, start) infinite;
+}
+
+@keyframes cursorBlink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* --- Oversized Typography: MAULIK PANDEY --- */
+.loader-typography {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  line-height: 0.95;
+  width: 100%;
+}
+
+.loader-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.04em, 0.8vw, 0.12em);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 8.5vw, 6.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+/* Individual Letter Snapping Animation */
+.loader-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(32px) skewX(-4deg) scale(0.9);
+  animation: charSnapIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--char-idx, 0) * 32ms + 80ms);
+  will-change: transform, opacity;
+}
+
+@keyframes charSnapIn {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) skewX(-4deg) scale(0.9);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-3px) skewX(1deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) skewX(0deg) scale(1);
+  }
+}
+
+/* --- Restrained Kinetic Accent Datum Rule --- */
+.loader-accent-line {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 3px;
+  background-color: var(--border-color-muted);
+  border-radius: var(--radius-sharp);
+  overflow: hidden;
+  margin: 0.25rem auto 0;
+}
+
+.loader-accent-runner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 35%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-action) 50%,
+    var(--accent-highlight) 100%
+  );
+  animation: accentSweep 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+@keyframes accentSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+/* Discipline Subtitle */
+.loader-discipline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  font-size: clamp(0.72rem, 1.8vw, 0.88rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  animation: fadeInSubtitle 0.4s ease 0.35s forwards;
+}
+
+@keyframes fadeInSubtitle {
+  to {
+    opacity: 1;
+  }
+}
+
+.loader-discipline-bullet {
+  color: var(--accent-action);
+  font-size: 0.6em;
+}
+
+/* --- Bottom Footer Editorial Metadata --- */
+.loader-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  font-size: clamp(0.68rem, 1.6vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  padding-top: 1rem;
+  border-top: var(--border-width-sm) dashed var(--border-color-muted);
+  box-sizing: border-box;
+}
+
+.loader-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.loader-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: right;
+}
+
+/* --- Theme Nuances --- */
+[data-theme='cyber-contrast'] .page-loader-root {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
+}
+
+[data-theme='cyber-contrast'] .loader-status-pill {
+  background-color: var(--bg-surface-secondary);
+}
+
+/* --- Accessibility: Reduced Motion Override --- */
+@media (prefers-reduced-motion: reduce) {
+  .page-loader-root {
+    transition: none !important;
+    animation: none !important;
+  }
+  .loader-char,
+  .loader-logo-tile,
+  .loader-logo-glyph,
+  .loader-accent-runner,
+  .loader-discipline,
+  .loader-cursor-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Responsive Adjustments & Mobile Stacked Footer */
+@media (max-width: 580px) {
+  .loader-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-align: center;
+    padding-top: 0.75rem;
+    font-size: clamp(0.62rem, 2.5vw, 0.72rem);
+  }
+
+  .loader-footer-left,
+  .loader-footer-right {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-loader-root {
+    padding: 1.25rem 1rem;
+  }
+  .loader-header-sub {
+    display: none;
+  }
+  .loader-accent-line {
+    max-width: 280px;
+  }
+}

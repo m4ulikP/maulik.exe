@@ -1,295 +1,310 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import './Footer.css';
-import { type ThemeId, type AppearanceMode, THEMES } from '../types/theme';
-import { ThemeAppearanceToggle } from './ThemeAppearanceToggle';
-import {
-  staggerListVariants,
-  staggerItemVariants,
-  reducedMotionVariants,
-  SECTION_VIEWPORT,
-} from '../utils/revealVariants';
+import { ArrowUpRight } from 'lucide-react';
+import { PERSONAL_INFO } from '../data/portfolioData';
+import { playTactileClick } from '../utils/sound';
 
 const CURRENT_YEAR = new Date().getFullYear();
-const VERIFIED_EMAIL = 'maulik.pandey9@gmail.com';
-const GITHUB_URL = 'https://github.com/m4ulikP';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/maulik-pandeyy/';
-const RESUME_URL = '/resume.pdf';
 
-export interface FooterProps {
-  onNavClick?: (targetId: string) => void;
-  theme?: ThemeId;
-  onThemeChange?: (theme: ThemeId) => void;
-  appearance?: AppearanceMode;
-  onToggleAppearance?: () => void;
-  isReducedMotion?: boolean;
-  systemReducedMotion?: boolean;
-  onToggleMotion?: () => void;
+interface FooterProps {
+  onOpenResume?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-  onNavClick,
-  theme = 'obsidian',
-  onThemeChange,
-  appearance = 'dark',
-  onToggleAppearance,
-  isReducedMotion = false,
-  systemReducedMotion = false,
-  onToggleMotion,
-}) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
   return (
     <footer className="site-footer" role="contentinfo">
-      <motion.div
-        className="site-container footer-container"
-        variants={isReducedMotion ? reducedMotionVariants : staggerListVariants}
-        initial={isReducedMotion ? false : 'hidden'}
-        whileInView="visible"
-        viewport={SECTION_VIEWPORT}
-      >
-        {/* Main Footer Row */}
-        <div className="footer-main-row">
-          {/* Brand Identity Column */}
-          <motion.div
-            className="footer-identity-col"
-            variants={isReducedMotion ? reducedMotionVariants : staggerItemVariants}
-          >
+      <div className="container">
+        {/* Main Footer Block */}
+        <div className="footer-main-block surface-card">
+          <div className="footer-content">
+            {/* Brand & Editorial Tagline Area */}
             <div className="footer-brand">
-              <div className="brand-lockup">
-                <span className="brand-text font-display">MAULIK.EXE</span>
-                <span className="footer-status-pill font-mono">ONLINE</span>
+              <div className="footer-logo font-mono">
+                <span className="logo-badge" aria-hidden="true">M_</span>
+                <span className="logo-title">MAULIK PANDEY</span>
               </div>
-              <p className="footer-tagline font-body">
-                Backend systems, telemetry pipelines, and applied software development.
-              </p>
+              <div className="footer-editorial">
+                <span className="footer-tagline font-display">BUILDING. LEARNING. IMPROVING.</span>
+                <span className="footer-role font-mono">SOFTWARE DEVELOPER | BACKEND &amp; AI</span>
+              </div>
             </div>
 
-            {/* Quick Section Navigation */}
-            <nav className="footer-nav font-mono" aria-label="Footer Section Navigation">
-              <span className="footer-meta-label">SECTIONS:</span>
-              <div className="footer-nav-links">
+            {/* Profiles, Contact & Interests */}
+            <div className="footer-specs font-mono">
+              <div className="spec-col">
+                <span className="col-heading">// PROFILES &amp; CONTACT</span>
                 <a
-                  href="#work"
-                  onClick={(e) => {
-                    if (onNavClick) {
-                      e.preventDefault();
-                      onNavClick('work');
-                    }
-                  }}
-                >
-                  [01] Work
-                </a>
-                <a
-                  href="#experience"
-                  onClick={(e) => {
-                    if (onNavClick) {
-                      e.preventDefault();
-                      onNavClick('experience');
-                    }
-                  }}
-                >
-                  [02] Experience
-                </a>
-                <a
-                  href="#about"
-                  onClick={(e) => {
-                    if (onNavClick) {
-                      e.preventDefault();
-                      onNavClick('about');
-                    }
-                  }}
-                >
-                  [03] About
-                </a>
-                <a
-                  href="#skills"
-                  onClick={(e) => {
-                    if (onNavClick) {
-                      e.preventDefault();
-                      onNavClick('skills');
-                    }
-                  }}
-                >
-                  [04] Skills
-                </a>
-                <a
-                  href="#contact"
-                  onClick={(e) => {
-                    if (onNavClick) {
-                      e.preventDefault();
-                      onNavClick('contact');
-                    }
-                  }}
-                >
-                  [05] Contact
-                </a>
-              </div>
-            </nav>
-
-            {/* Verified External Channels */}
-            <div className="footer-channels font-mono">
-              <span className="footer-meta-label">CHANNELS:</span>
-              <div className="footer-channels-links">
-                <a
-                  href={`mailto:${VERIFIED_EMAIL}`}
-                  className="footer-channel-link"
-                  aria-label={`Send email to ${VERIFIED_EMAIL}`}
-                >
-                  <span>Email ↗</span>
-                </a>
-                <a
-                  href={GITHUB_URL}
+                  href={PERSONAL_INFO.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-channel-link"
-                  aria-label="Visit Maulik's GitHub profile"
+                  className="spec-val link-channel"
                 >
-                  <span>GitHub ↗</span>
+                  <span>GITHUB [m4ulikP]</span>
+                  <ArrowUpRight size={11} />
                 </a>
                 <a
-                  href={LINKEDIN_URL}
+                  href={PERSONAL_INFO.linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-channel-link"
-                  aria-label="Visit Maulik's LinkedIn profile"
+                  className="spec-val link-channel"
                 >
-                  <span>LinkedIn ↗</span>
+                  <span>LINKEDIN [maulp]</span>
+                  <ArrowUpRight size={11} />
                 </a>
                 <a
-                  href={RESUME_URL}
-                  download="Maulik_Pandey_Resume.pdf"
-                  className="footer-channel-link resume-channel"
-                  aria-label="Download Resume PDF"
+                  href={`mailto:${PERSONAL_INFO.email}`}
+                  className="spec-val link-channel"
                 >
-                  <span>Resume [PDF] ↓</span>
+                  <span>EMAIL</span>
+                  <ArrowUpRight size={11} />
                 </a>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Minimal Integrated Preference Controls (Directly on footer background, no boxed card) */}
-          <motion.div
-            className="footer-preferences-area font-mono"
-            variants={isReducedMotion ? reducedMotionVariants : staggerItemVariants}
-          >
-            <span className="footer-pref-heading">PREFERENCES:</span>
-
-            <div
-              className="footer-controls-strip"
-              role="group"
-              aria-label="Theme, appearance, and motion preferences"
-            >
-              {/* Neumorphic × Liquid Glass Light/Dark Appearance Switch */}
-              <ThemeAppearanceToggle
-                appearance={appearance}
-                onToggle={onToggleAppearance || (() => {})}
-                isReducedMotion={isReducedMotion}
-              />
-
-              {/* Minimal Vertical Divider */}
-              <span className="footer-controls-divider" aria-hidden="true">/</span>
-
-              {/* Horizontal Theme Swatches */}
-              <div
-                className="footer-theme-swatches"
-                role="radiogroup"
-                aria-label="Theme color"
-              >
-                {THEMES.map((t) => {
-                  const isSelected = theme === t.id;
-                  return (
-                    <div key={t.id} className="footer-swatch-wrapper">
-                      <button
-                        type="button"
-                        role="radio"
-                        aria-checked={isSelected}
-                        aria-label={`Theme: ${t.label}${isSelected ? ' (active)' : ''}`}
-                        className={`footer-swatch-btn ${isSelected ? 'swatch-active' : ''}`}
-                        onClick={() => onThemeChange?.(t.id)}
-                      >
-                        <span
-                          className="swatch-circle"
-                          style={{
-                            backgroundColor: t.accentColor,
-                            boxShadow: isSelected
-                              ? `0 0 0 2px var(--color-bg-base), 0 0 0 4px ${t.accentColor}`
-                              : undefined,
-                          }}
-                        >
-                          {isSelected && (
-                            <span className="swatch-check-glyph" aria-hidden="true">✓</span>
-                          )}
-                        </span>
-
-                        {/* Tooltip beneath swatch on hover/focus */}
-                        <span className="footer-swatch-tooltip" role="tooltip">
-                          {t.label}
-                        </span>
-                      </button>
-
-                      <span className={`footer-swatch-sublabel ${isSelected ? 'sublabel-active' : ''}`} aria-hidden="true">
-                        {t.label}
-                      </span>
-                    </div>
-                  );
-                })}
+                {PERSONAL_INFO.resumeUrl && (
+                  <button
+                    type="button"
+                    className="spec-val link-channel footer-resume-btn"
+                    onClick={() => {
+                      playTactileClick();
+                      if (onOpenResume) {
+                        onOpenResume();
+                      } else {
+                        window.open(PERSONAL_INFO.resumeUrl, '_blank');
+                      }
+                    }}
+                    title="View Resume in PDF Viewer"
+                  >
+                    <span>RESUME [PDF]</span>
+                    <ArrowUpRight size={11} />
+                  </button>
+                )}
               </div>
 
-              {/* Minimal Vertical Divider */}
-              <span className="footer-controls-divider" aria-hidden="true">/</span>
-
-              {/* Understated Motion Effects Toggle */}
-              <button
-                type="button"
-                className={`footer-motion-toggle ${isReducedMotion ? 'motion-off' : 'motion-on'}`}
-                onClick={onToggleMotion}
-                disabled={systemReducedMotion}
-                aria-pressed={!isReducedMotion}
-                aria-label={
-                  systemReducedMotion
-                    ? 'Motion effects disabled by operating system preference (locked)'
-                    : `Motion effects: ${isReducedMotion ? 'Off' : 'On'}. Click to toggle`
-                }
-                title={
-                  systemReducedMotion
-                    ? 'Motion effects: Off (OS locked)'
-                    : `Motion effects: ${isReducedMotion ? 'Off' : 'On'} (Click to toggle)`
-                }
-              >
-                <span className="motion-toggle-icon" aria-hidden="true">
-                  {isReducedMotion ? '⊘' : '⟳'}
-                </span>
-                <span className="motion-toggle-label">
-                  {systemReducedMotion
-                    ? 'Motion: Off (OS)'
-                    : isReducedMotion
-                    ? 'Motion: Off'
-                    : 'Motion: On'}
-                </span>
-              </button>
+              <div className="spec-col">
+                <span className="col-heading">// INTERESTS</span>
+                <div className="interest-tags-wrap">
+                  <span className="interest-tag">Backend Engineering</span>
+                  <span className="interest-tag">AI / ML Workflows</span>
+                  <span className="interest-tag">Software Development</span>
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Bottom Bar — Copyright Only */}
+          <div className="footer-bottom-bar font-mono">
+            <div className="copyright-line">
+              <span>© {CURRENT_YEAR} MAULIK PANDEY. ALL RIGHTS RESERVED.</span>
+              <span className="bullet">/</span>
+              <span>SOFTWARE DEVELOPER | BACKEND &amp; AI</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Footer Bottom Strip */}
-        <motion.div
-          className="footer-bottom font-mono"
-          variants={isReducedMotion ? reducedMotionVariants : staggerItemVariants}
-        >
-          <div className="footer-legal">
-            <span>© {CURRENT_YEAR} MAULIK PANDEY</span>
-            <span className="legal-sep">/</span>
-            <span>ALL RIGHTS RESERVED</span>
-          </div>
+      <style>{`
+        .site-footer {
+          padding-top: var(--space-xl);
+          padding-bottom: var(--space-3xl);
+          background-color: var(--bg-app);
+          border-top: var(--border-width-lg) solid var(--border-color-default);
+        }
 
-          <div className="footer-status-tag">
-            <span>PORTFOLIO // v1.0</span>
-          </div>
 
-          <a href="#top" className="back-to-top-link">
-            <span>BACK TO TOP ↑</span>
-          </a>
-        </motion.div>
-      </motion.div>
+        .footer-main-block {
+          background-color: var(--bg-surface);
+          border: var(--border-width-md) solid var(--border-color-default);
+        }
+
+        .footer-content {
+          padding: 2rem 1.5rem;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          align-items: center;
+        }
+
+        @media (min-width: 768px) {
+          .footer-content {
+            grid-template-columns: 1fr auto;
+            padding: 2.25rem 2rem;
+          }
+        }
+
+        .footer-brand {
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+        }
+
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          font-size: 1.15rem;
+          font-weight: 800;
+        }
+
+        .logo-badge {
+          background-color: var(--accent-highlight);
+          color: var(--color-on-accent);
+          padding: 0.25rem 0.5rem;
+          border: var(--border-width-sm) solid var(--border-color-default);
+          box-shadow: 2px 2px 0px var(--color-ink);
+          font-size: 0.85rem;
+          font-weight: 900;
+          user-select: none;
+        }
+
+        .logo-title {
+          letter-spacing: -0.02em;
+          color: var(--color-text-primary);
+        }
+
+        .footer-editorial {
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
+        }
+
+        .footer-tagline {
+          font-size: clamp(1rem, 1.6vw + 0.5rem, 1.35rem);
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          color: var(--color-text-primary);
+          line-height: 1.2;
+          text-transform: uppercase;
+        }
+
+        .footer-role {
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          color: var(--color-text-muted);
+        }
+
+        .footer-specs {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.75rem;
+        }
+
+        @media (min-width: 540px) {
+          .footer-specs {
+            grid-template-columns: auto auto;
+            gap: 2.5rem;
+          }
+        }
+
+        .spec-col {
+          display: flex;
+          flex-direction: column;
+          gap: 0.45rem;
+        }
+
+        .col-heading {
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: var(--color-text-muted);
+          letter-spacing: 0.05em;
+          margin-bottom: 0.35rem;
+        }
+
+        .interest-tags-wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 0.45rem;
+        }
+
+        .interest-tag {
+          display: inline-flex;
+          align-items: center;
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 0.28rem 0.65rem;
+          background-color: var(--bg-surface-secondary);
+          border: 1px solid var(--border-color-default);
+          color: var(--color-text-primary);
+          width: fit-content;
+          letter-spacing: 0.01em;
+          transition: transform 0.12s ease, background-color 0.12s ease;
+        }
+
+        .interest-tag:hover {
+          background-color: var(--bg-surface-tertiary);
+          transform: translateY(-1px);
+        }
+
+        [data-theme='cyber-contrast'] .interest-tag {
+          background-color: rgba(255, 255, 255, 0.04);
+          border-color: rgba(255, 255, 255, 0.14);
+          color: var(--color-text-primary);
+        }
+
+        [data-theme='cyber-contrast'] .interest-tag:hover {
+          background-color: rgba(255, 255, 255, 0.08);
+          border-color: rgba(223, 255, 0, 0.4);
+        }
+
+        .spec-val {
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--color-text-primary);
+        }
+
+        .spec-val.highlight {
+          color: var(--color-text-accent);
+        }
+
+        .link-channel {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          text-decoration: none;
+          color: var(--color-text-primary);
+          transition: color var(--transition-fast);
+        }
+
+        .link-channel:hover {
+          color: var(--color-text-accent);
+          text-decoration: underline;
+        }
+
+        .footer-resume-btn {
+          background: none;
+          border: none;
+          padding: 0;
+          font: inherit;
+          cursor: pointer;
+          text-align: left;
+        }
+
+        .footer-bottom-bar {
+          display: flex;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          background-color: var(--bg-surface-secondary);
+          border-top: var(--border-width-md) solid var(--border-color-default);
+          font-size: 0.72rem;
+          font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+          .footer-bottom-bar {
+            padding: 1rem 2rem;
+          }
+        }
+
+        .copyright-line {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.5rem;
+          color: var(--color-text-secondary);
+          width: 100%;
+        }
+
+        .copyright-line .bullet {
+          color: var(--color-text-muted);
+        }
+      `}</style>
     </footer>
   );
 };

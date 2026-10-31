@@ -17,6 +17,7 @@ dist-ssr
 
 # Scratch and test artifacts
 scratch/
+lighthouse-*.json
 
 # Deployment & tooling cache
 .vercel
