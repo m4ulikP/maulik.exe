@@ -12,11 +12,10 @@ import { ScrollProgress } from './components/ScrollProgress';
 import { BackToTop } from './components/BackToTop';
 import { PageLoader } from './components/PageLoader';
 
+import { NotFound } from './components/NotFound';
+
 const PdfViewerModal = lazy(() =>
   import('./components/PdfViewerModal').then((mod) => ({ default: mod.PdfViewerModal }))
-);
-const NotFound = lazy(() =>
-  import('./components/NotFound').then((mod) => ({ default: mod.NotFound }))
 );
 
 const getInitialTheme = (): 'paper' | 'cyber-contrast' => {
@@ -37,14 +36,33 @@ const getInitialTheme = (): 'paper' | 'cyber-contrast' => {
   return 'paper';
 };
 
+const isHomeRoutePath = (pathname: string): boolean => {
+  return (
+    pathname === '/' ||
+    pathname === '' ||
+    pathname === '/index.html' ||
+    pathname.startsWith('/#')
+  );
+};
+
 export const App: React.FC = () => {
   const [theme, setTheme] = useState<'paper' | 'cyber-contrast'>(getInitialTheme);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPath, setCurrentPath] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return window.location.pathname;
     }
     return '/';
+  });
+
+  const isHomeRoute = isHomeRoutePath(currentPath);
+
+  // Route resolution happens before deciding whether to display the loading animation.
+  // 404 routes bypass the loader entirely.
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return isHomeRoutePath(window.location.pathname);
+    }
+    return true;
   });
 
   const [isPdfModalOpen, setIsPdfModalOpen] = useState<boolean>(false);
@@ -184,40 +202,25 @@ export const App: React.FC = () => {
     setIsPdfModalOpen(true);
   };
 
-  // Check if current path matches home route or unknown 404 route
-  const isHomeRoute =
-    currentPath === '/' ||
-    currentPath === '' ||
-    currentPath === '/index.html' ||
-    currentPath.startsWith('/#');
-
   if (!isHomeRoute) {
     return (
-      <div className="app-root" aria-busy={isLoading}>
-        {isLoading && (
-          <PageLoader
-            currentTheme={theme}
-            onComplete={() => setIsLoading(false)}
-          />
-        )}
+      <div className="app-root" aria-busy={false}>
         <CustomCursor />
-        <Suspense fallback={null}>
-          <NotFound
-            onNavigateHome={() => {
-              window.history.pushState({}, '', '/');
-              setCurrentPath('/');
-            }}
-            currentTheme={theme}
-            onToggleTheme={handleToggleTheme}
-          />
-        </Suspense>
+        <NotFound
+          onNavigateHome={() => {
+            window.history.pushState({}, '', '/');
+            setCurrentPath('/');
+          }}
+          currentTheme={theme}
+          onToggleTheme={handleToggleTheme}
+        />
       </div>
     );
   }
 
   return (
     <div className="app-root" aria-busy={isLoading}>
-      {isLoading && (
+      {isLoading && isHomeRoute && (
         <PageLoader
           currentTheme={theme}
           onComplete={() => setIsLoading(false)}
