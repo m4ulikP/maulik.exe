@@ -506,6 +506,8 @@ export const Contact: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 0.45rem;
           padding: 0.65rem 1.25rem;
           background-color: var(--bg-header-contrast);
           color: var(--color-header-text);

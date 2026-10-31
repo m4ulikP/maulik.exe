@@ -606,6 +606,7 @@ export const Projects: React.FC = () => {
           align-items: center;
           justify-content: center;
           padding: 1.25rem;
+          box-sizing: border-box;
           opacity: 1;
         }
 
@@ -631,11 +632,15 @@ export const Projects: React.FC = () => {
           width: 100%;
           max-width: 820px;
           max-height: 90vh;
+          max-height: 90dvh;
           overflow-y: auto;
+          overflow-x: hidden;
           background-color: var(--bg-surface);
           display: flex;
           flex-direction: column;
           box-shadow: var(--shadow-hard-lg);
+          min-width: 0;
+          box-sizing: border-box;
         }
 
         .modal-container.is-entering {
@@ -691,22 +696,52 @@ export const Projects: React.FC = () => {
           position: sticky;
           top: 0;
           z-index: 10;
+          min-width: 0;
+          box-sizing: border-box;
+          gap: 0.5rem;
         }
 
         .modal-tag-group {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.65rem;
+          min-width: 0;
+          flex: 1;
+        }
+
+        .modal-badge {
+          flex-shrink: 0;
+        }
+
+        .modal-title {
+          min-width: 0;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .modal-close-btn {
           background: var(--bg-surface);
           border: 1.5px solid var(--border-color-default);
           cursor: pointer;
-          padding: 0.25rem;
+          padding: 0.35rem;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           color: var(--color-text-primary);
+          flex-shrink: 0;
+          transition: var(--transition-tactile);
+          touch-action: manipulation;
+        }
+
+        .modal-close-btn:hover {
+          background: var(--bg-surface-tertiary);
+          transform: translate(-1px, -1px);
+          box-shadow: 2px 2px 0px var(--color-ink);
+        }
+
+        .modal-close-btn:active {
+          transform: translate(1px, 1px);
+          box-shadow: 0px 0px 0px transparent;
         }
 
         .modal-body {
@@ -714,6 +749,8 @@ export const Projects: React.FC = () => {
           display: flex;
           flex-direction: column;
           gap: 1.75rem;
+          min-width: 0;
+          box-sizing: border-box;
         }
 
         /* 6 Modal Sections */
@@ -721,6 +758,8 @@ export const Projects: React.FC = () => {
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
+          min-width: 0;
+          box-sizing: border-box;
         }
 
         .section-header-tag {
@@ -925,6 +964,96 @@ export const Projects: React.FC = () => {
         .pending-text {
           font-size: 0.72rem;
           color: var(--color-text-muted);
+        }
+
+        @media (max-width: 640px) {
+          .modal-backdrop {
+            padding: 0.75rem 0.5rem;
+            padding-top: max(0.75rem, env(safe-area-inset-top, 0.75rem));
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+          }
+
+          .modal-container {
+            max-height: 92dvh;
+            border-width: var(--border-width-md);
+            box-shadow: var(--shadow-hard-sm);
+          }
+
+          .modal-header {
+            padding: 0.65rem 0.75rem;
+            gap: 0.5rem;
+          }
+
+          .modal-tag-group {
+            flex-wrap: wrap;
+            gap: 0.35rem 0.5rem;
+          }
+
+          .modal-badge {
+            font-size: 0.62rem;
+            padding: 0.15rem 0.45rem;
+          }
+
+          .modal-title {
+            font-size: 0.74rem;
+            line-height: 1.3;
+          }
+
+          .modal-close-btn {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .modal-body {
+            padding: 1rem 0.75rem;
+            gap: 1.25rem;
+          }
+
+          .section-header-tag {
+            padding: 0.35rem 0.6rem;
+            font-size: 0.7rem;
+            gap: 0.35rem;
+          }
+
+          .section-heading {
+            font-size: 0.7rem;
+            word-break: break-word;
+          }
+
+          .modal-problem-desc {
+            font-size: 0.82rem;
+          }
+
+          .modal-desc {
+            font-size: 0.78rem;
+          }
+
+          .status-card-header {
+            padding: 0.45rem 0.65rem;
+            font-size: 0.68rem;
+          }
+
+          .status-card-desc {
+            padding: 0.65rem;
+            font-size: 0.74rem;
+          }
+
+          .modal-footer {
+            padding: 0.85rem 1rem;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.6rem;
+          }
+
+          .modal-footer .btn-brutal {
+            width: 100%;
+          }
         }
       `}</style>
     </section>

@@ -129,6 +129,10 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
           display: flex;
           flex-direction: column;
           gap: 1.15rem;
+          min-width: 0;
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
         }
 
         .arch-diagram-header {
@@ -171,10 +175,12 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
         .arch-legend {
           display: flex;
           align-items: center;
-          gap: 0.85rem;
+          flex-wrap: wrap;
+          gap: 0.5rem 0.85rem;
           font-size: 0.68rem;
           font-weight: 700;
           color: var(--color-text-muted);
+          min-width: 0;
         }
 
         .legend-item {
@@ -213,7 +219,12 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
         /* Pipeline Visual Track */
         .pipeline-track-wrapper {
           overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          max-width: 100%;
+          width: 100%;
+          min-width: 0;
           padding-bottom: 0.5rem;
+          box-sizing: border-box;
         }
 
         .pipeline-nodes-scroll {
@@ -425,13 +436,17 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 0.4rem;
+          flex-wrap: wrap;
+          gap: 0.35rem;
           font-size: 0.72rem;
           font-weight: 800;
+          min-width: 0;
         }
 
         .stage-name {
           color: var(--color-text-primary);
+          min-width: 0;
+          word-break: break-word;
         }
 
         .stage-status-indicator {
@@ -439,6 +454,7 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
           display: inline-flex;
           align-items: center;
           gap: 0.25rem;
+          flex-shrink: 0;
         }
 
         .status-green {
@@ -458,6 +474,47 @@ export const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ projec
           line-height: 1.45;
           color: var(--color-text-secondary);
           margin: 0;
+        }
+
+        @media (max-width: 600px) {
+          .arch-diagram-card {
+            padding: 0.85rem;
+            gap: 0.85rem;
+          }
+
+          .header-title-wrap {
+            font-size: 0.8rem;
+          }
+
+          .arch-summary {
+            font-size: 0.78rem;
+          }
+
+          .pipeline-node-box {
+            min-width: 120px;
+            max-width: 150px;
+            padding: 0.5rem 0.65rem;
+          }
+
+          .node-index {
+            font-size: 0.62rem;
+          }
+
+          .node-title {
+            font-size: 0.72rem;
+          }
+
+          .node-status-badge {
+            font-size: 0.58rem;
+          }
+
+          .stage-card {
+            padding: 0.55rem 0.65rem;
+          }
+
+          .stage-desc {
+            font-size: 0.72rem;
+          }
         }
       `}</style>
     </div>

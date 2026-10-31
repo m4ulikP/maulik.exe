@@ -713,6 +713,42 @@ export const Navbar: React.FC<NavbarProps> = ({
         .w-full {
           width: 100%;
         }
+        @media (max-width: 480px) {
+          .nav-container {
+            padding: 0.5rem 0.75rem;
+          }
+          .nav-wrapper {
+            gap: 0.5rem;
+          }
+          .brand-logo {
+            gap: 0.45rem;
+          }
+          .logo-text {
+            font-size: 1rem;
+          }
+          .nav-controls {
+            gap: 0.35rem;
+          }
+          .ctrl-btn {
+            padding: 0.35rem 0.45rem;
+          }
+          .mobile-toggle-btn {
+            padding: 0.35rem;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .nav-container {
+            padding: 0.45rem 0.5rem;
+          }
+          .logo-badge {
+            padding: 0.2rem 0.35rem;
+            font-size: 0.8rem;
+          }
+          .logo-text {
+            font-size: 0.88rem;
+          }
+        }
       `}</style>
     </header>
   );

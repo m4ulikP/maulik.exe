@@ -223,18 +223,27 @@ export const About: React.FC = () => {
 
         .edu-meta-item {
           display: flex;
-          gap: 0.5rem;
+          flex-wrap: wrap;
+          gap: 0.35rem 0.5rem;
         }
 
         .meta-k {
           color: var(--color-text-muted);
           font-weight: 700;
-          min-width: 120px;
+          min-width: 110px;
         }
 
         .meta-v {
           color: var(--color-text-primary);
           font-weight: 700;
+          word-break: break-word;
+        }
+
+        @media (max-width: 480px) {
+          .meta-k {
+            min-width: unset;
+            width: 100%;
+          }
         }
 
         .edu-summary {

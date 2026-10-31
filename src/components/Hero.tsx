@@ -457,6 +457,33 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
           gap: 0.85rem;
         }
 
+        @media (max-width: 480px) {
+          .brand-header-strip {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.68rem;
+            flex-wrap: wrap;
+            gap: 0.25rem 0.5rem;
+          }
+
+          .hero-main-content {
+            padding: 1.25rem 1rem;
+            gap: 1.5rem;
+          }
+
+          .hero-actions-bar {
+            padding: 1rem;
+          }
+
+          .cta-group {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .cta-group .btn-brutal {
+            width: 100%;
+          }
+        }
+
         .btn-disabled {
           background-color: var(--bg-surface-tertiary);
           color: var(--color-text-muted);

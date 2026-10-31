@@ -150,20 +150,24 @@ export const Skills: React.FC = () => {
           flex-wrap: wrap;
           align-items: center;
           gap: 0.75rem 0.85rem;
+          min-width: 0;
         }
 
         /* Individual Skill Pill */
         .skill-pill-item {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
+          flex-wrap: wrap;
+          gap: 0.45rem 0.6rem;
           padding: 0.48rem 0.85rem;
           background-color: var(--bg-surface-secondary);
           border: 1px solid var(--border-color-default);
           font-family: var(--font-mono);
-          line-height: 1.2;
+          line-height: 1.25;
           transition: transform 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
           user-select: none;
+          max-width: 100%;
+          box-sizing: border-box;
         }
 
         .skill-pill-link {
@@ -196,8 +200,9 @@ export const Skills: React.FC = () => {
           font-size: 0.86rem;
           font-weight: 700;
           color: var(--color-text-primary);
-          white-space: nowrap;
           letter-spacing: -0.01em;
+          word-break: normal;
+          overflow-wrap: break-word;
         }
 
         /* Proficiency Badge */
@@ -208,9 +213,11 @@ export const Skills: React.FC = () => {
           background-color: rgba(0, 0, 0, 0.05);
           color: var(--color-text-muted);
           border: 1px solid rgba(0, 0, 0, 0.08);
-          white-space: nowrap;
           letter-spacing: 0.01em;
           border-radius: 1px;
+          white-space: normal;
+          word-break: normal;
+          display: inline-block;
         }
 
         [data-theme='cyber-contrast'] .skill-proficiency-badge {
@@ -240,30 +247,33 @@ export const Skills: React.FC = () => {
         /* Responsive Breakpoints */
         @media (max-width: 640px) {
           .skill-category-card {
-            padding: 1rem 0.9rem;
+            padding: 0.9rem 0.8rem;
           }
 
           .category-header {
-            font-size: 0.88rem;
-            margin-bottom: 0.85rem;
-          }
-
-          .skills-items-wrap {
-            gap: 0.55rem;
-          }
-
-          .skill-pill-item {
-            padding: 0.42rem 0.7rem;
+            font-size: 0.86rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
             gap: 0.45rem;
           }
 
+          .skills-items-wrap {
+            gap: 0.5rem;
+          }
+
+          .skill-pill-item {
+            padding: 0.4rem 0.6rem;
+            gap: 0.35rem 0.5rem;
+            max-width: 100%;
+          }
+
           .skill-name {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
           }
 
           .skill-proficiency-badge {
-            font-size: 0.64rem;
-            padding: 0.15rem 0.4rem;
+            font-size: 0.62rem;
+            padding: 0.15rem 0.35rem;
           }
         }
       `}</style>

@@ -54,11 +54,12 @@ export const BackToTop: React.FC = () => {
       <style>{`
         .floating-back-to-top {
           position: fixed;
-          bottom: 1.75rem;
-          right: 1.75rem;
+          bottom: max(1.75rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));
+          right: max(1.75rem, calc(env(safe-area-inset-right, 0px) + 1.25rem));
           z-index: 90000;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 0.35rem;
           padding: 0.55rem 0.85rem;
           font-size: 0.72rem;
@@ -67,8 +68,12 @@ export const BackToTop: React.FC = () => {
           color: var(--color-on-accent);
           border: var(--border-width-md) solid var(--border-color-default);
           box-shadow: var(--shadow-hard-md);
+          min-width: 44px;
+          min-height: 44px;
           cursor: pointer;
           animation: bttEnter 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          touch-action: manipulation;
+          box-sizing: border-box;
         }
 
         @keyframes bttEnter {
@@ -92,11 +97,16 @@ export const BackToTop: React.FC = () => {
           box-shadow: 0px 0px 0px var(--color-ink);
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 600px), (max-height: 500px) {
           .floating-back-to-top {
-            bottom: 1.25rem;
-            right: 1.25rem;
-            padding: 0.5rem 0.65rem;
+            bottom: max(1rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
+            right: max(1rem, calc(env(safe-area-inset-right, 0px) + 0.75rem));
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            padding: 0;
+            box-shadow: var(--shadow-hard-sm);
           }
           .btt-text {
             display: none;
