@@ -37,43 +37,6 @@ The application serves as both a production frontend showcase and an interactive
 
 ---
 
-## 🖼️ Interface Preview
-
-<!-- PREVIEW SCREENSHOT PLACEHOLDER -->
-> [!NOTE]
-> **Production Preview Placeholders**  
-> High-resolution captures of the live production interface across both desktop and mobile viewports can be mounted here.
-
-```
-+-------------------------------------------------------------------------+
-| [SYS_STATUS: ONLINE]             MAULIK.EXE             [THEME: PAPER]  |
-|=========================================================================|
-|                                                                         |
-|  // SYSTEM INDEX: 01                                                    |
-|  SOFTWARE DEVELOPER / BACKEND & AI PIPELINES                            |
-|                                                                         |
-|  +-----------------------------+  +----------------------------------+  |
-|  | FEATURED: Aegis3D           |  | FEATURED: OutreachOS             |  |
-|  | Structural Health Telemetry |  | Freelancer Sales Studio          |  |
-|  | [Open Architecture Modal]   |  | [Open Architecture Modal]        |  |
-|  +-----------------------------+  +----------------------------------+  |
-|                                                                         |
-|  +-------------------------------------------------------------------+  |
-|  | TECHNICAL SKILLS: Python · Java · C++ · ML · Docker · Antigravity   |  |
-|  +-------------------------------------------------------------------+  |
-|                                                                         |
-+-------------------------------------------------------------------------+
-```
-
-| Theme / Modal | Description | Target Viewport |
-| :--- | :--- | :--- |
-| **Paper Theme** | High-contrast warm brutalist canvas (`#F4F0E8`), solid ink borders, cobalt actions | Desktop / Mobile |
-| **Cyber-Contrast** | 5-tier dark surface hierarchy (`#0a0b0e`), high-contrast text, neon acid accents | Desktop / Mobile |
-| **Architecture Modals** | Interactive component pipeline diagrams with inspectable data nodes | Modal Viewport |
-| **PDF Document Viewer** | Hardware-accelerated canvas PDF renderer with zoom controls and page index | Modal Viewport |
-
----
-
 ## 🎨 Architecture & Design System
 
 The visual identity is guided by neo-brutalist software engineering aesthetics, prioritizing clarity, legibility, and physical tactile feedback.
