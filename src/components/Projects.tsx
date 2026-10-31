@@ -98,7 +98,7 @@ export const Projects: React.FC = () => {
             <span className="section-title">FEATURED PROJECTS</span>
           </div>
           <span className="label-mono font-mono text-muted">
-            [{PROJECTS.length.toString().padStart(2, '0')}] FEATURED
+            FEATURED
           </span>
         </div>
 
@@ -137,11 +137,6 @@ export const Projects: React.FC = () => {
 
               {/* Card Footer Actions */}
               <div className="project-card-footer font-mono">
-                <div className="status-indicator">
-                  <span className="status-pip active"></span>
-                  <span>{project.status}</span>
-                </div>
-
                 <div className="card-actions">
                   <button
                     type="button"

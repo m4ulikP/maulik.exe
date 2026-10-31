@@ -399,7 +399,7 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     code: '01',
     categoryName: 'Programming Languages',
     items: [
-      { skill: 'Python', proficiency: 'Intermediate', linkUrl: 'https://www.python.org/' },
+      { skill: 'Python', proficiency: 'Intermediate' },
       { skill: 'Java', proficiency: 'Intermediate' },
       { skill: 'C++', proficiency: 'Intermediate' },
       { skill: 'JavaScript', proficiency: 'Currently Learning' },
@@ -453,7 +453,6 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
       {
         skill: 'Google Antigravity',
         proficiency: 'Hands-on Experience',
-        linkUrl: 'https://antigravity.google/',
       },
     ],
   },

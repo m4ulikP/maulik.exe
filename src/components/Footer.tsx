@@ -60,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
                 {PERSONAL_INFO.resumeUrl && (
                   <button
                     type="button"
-                    className="spec-val link-channel footer-resume-btn"
+                    className="spec-val link-channel footer-resume-btn font-mono"
                     onClick={() => {
                       playTactileClick();
                       if (onOpenResume) {
@@ -271,7 +271,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
           background: none;
           border: none;
           padding: 0;
-          font: inherit;
+          margin: 0;
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: inherit;
+          line-height: inherit;
           cursor: pointer;
           text-align: left;
         }
