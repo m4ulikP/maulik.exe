@@ -1,0 +1,27 @@
+# Maulik Pandey — Developer Portfolio & Technical Profile
+
+> Computer Science student at IILM University (AI/ML) and Software Developer specializing in Backend Engineering and Applied AI Systems.
+
+Personal technical profile, project index, and resource directory for Maulik Pandey. Focused on building reliable backend services, REST APIs, signal processing pipelines, and practical machine learning applications.
+
+## Canonical Resources
+
+- [Homepage](https://maulik-exe.vercel.app/)
+- [Resume](https://maulik-exe.vercel.app/resume.pdf)
+- [GitHub Profile](https://github.com/m4ulikP)
+- [LinkedIn Profile](https://www.linkedin.com/in/maulp/)
+
+## Featured Projects
+
+- [Aegis3D](https://github.com/m4ulikP/Aegis3D)
+  AI-powered structural health monitoring and sensor telemetry prototype. Built with FastAPI, NumPy, SciPy, PostgreSQL, and Server-Sent Events (SSE). Implements a deterministic 9-stage signal processing pipeline featuring Butterworth filtering, sample window burst detection, FFT/RMS feature extraction, dynamic baseline tracking, z-score anomaly scoring, and an explainable 0–100 Structural Health Index.
+- [OutreachOS](https://github.com/m4ulikP/OutreachOS)
+  Freelancer sales studio and lead management application. Built with Next.js 14 App Router, TypeScript, Prisma ORM, PostgreSQL, and Zod. Features a deterministic 3-tier deduplication engine (email normalization, canonical LinkedIn URL parsing, and composite key matching), a 6-stage sales progression pipeline, and transactional email dispatch with exponential retry handling.
+
+## Technical Skills & Background
+
+- **Background & Education:** Computer Science & Engineering undergraduate at IILM University specializing in Artificial Intelligence and Machine Learning (AI/ML). Completed Machine Learning Specialization by DeepLearning.AI & Stanford Online.
+- **Experience:** Former Backend AI Engineer Intern at Flyrank AI (Jul 1 – Aug 26, 2026), developing FastAPI services, RAG retrieval pipelines, LLM APIs with structured outputs, and evaluation workflows.
+- **Programming Languages:** Python, Java, C++, JavaScript, TypeScript.
+- **Backend & Systems:** FastAPI, REST APIs, Server-Sent Events (SSE), PostgreSQL, Alembic, Docker, Git, GitHub.
+- **AI & Data Science:** Retrieval-Augmented Generation (RAG), LLM APIs & Function Calling, NumPy, pandas, Matplotlib.

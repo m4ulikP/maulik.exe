@@ -1,0 +1,80 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ards-project/ard-spec/main/spec/schemas/ard-entry.schema.json",
+  "entries": [
+    {
+      "identifier": "urn:air:maulik-exe.vercel.app:portfolio:main",
+      "displayName": "Maulik Pandey — Developer Portfolio",
+      "type": "application/agent-card+json",
+      "url": "https://maulik-exe.vercel.app/",
+      "description": "Personal developer portfolio and technical profile of Maulik Pandey, Software Developer specializing in Backend and AI systems.",
+      "capabilities": [
+        "BackendEngineering",
+        "AISystems",
+        "APIDevelopment"
+      ],
+      "tags": [
+        "portfolio",
+        "backend",
+        "ai",
+        "developer"
+      ],
+      "representativeQueries": [
+        "Who is Maulik Pandey?",
+        "What backend and AI technologies does Maulik Pandey use?",
+        "Show me projects developed by Maulik Pandey"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-31T00:00:00Z"
+    },
+    {
+      "identifier": "urn:air:maulik-exe.vercel.app:project:aegis3d",
+      "displayName": "Aegis3D — Structural Health Monitoring Prototype",
+      "type": "application/agent-card+json",
+      "url": "https://github.com/m4ulikP/Aegis3D",
+      "description": "AI-powered structural health monitoring prototype with deterministic signal processing and telemetry streaming.",
+      "capabilities": [
+        "SignalProcessing",
+        "FastAPI",
+        "TelemetryStreaming"
+      ],
+      "tags": [
+        "aegis3d",
+        "fastapi",
+        "scipy",
+        "structural-health"
+      ],
+      "representativeQueries": [
+        "What is Aegis3D?",
+        "How does Aegis3D process sensor signals?",
+        "View Aegis3D architecture and repository"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-31T00:00:00Z"
+    },
+    {
+      "identifier": "urn:air:maulik-exe.vercel.app:project:outreach-os",
+      "displayName": "OutreachOS — Sales Outreach Application",
+      "type": "application/agent-card+json",
+      "url": "https://github.com/m4ulikP/OutreachOS",
+      "description": "Sales outreach and lead management application with 3-tier canonical deduplication and lifecycle tracking.",
+      "capabilities": [
+        "LeadManagement",
+        "DeduplicationEngine",
+        "NextJS"
+      ],
+      "tags": [
+        "outreach-os",
+        "nextjs",
+        "prisma",
+        "sales-automation"
+      ],
+      "representativeQueries": [
+        "What is OutreachOS?",
+        "How does OutreachOS handle lead deduplication?",
+        "View OutreachOS repository and features"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-31T00:00:00Z"
+    }
+  ]
+}
